@@ -1,4 +1,4 @@
-import { Nav, NavItem } from './Nav';
+import { Link, Nav, NavItem } from './Nav';
 
 const Header = () => {
   const HEADER = [
@@ -8,15 +8,18 @@ const Header = () => {
     },
     {
       label: 'Resume',
-      link: '#resume-coming-soon'
+      link: '/resume'
     }
   ];
 
   return (
     <header className="z-20 absolute top-0 w-full flex flex-col sm:flex-row space-y-2 items-center justify-between pt-6 px-0 sm:px-12 xl:px-48">
-      <h1 className="text-slate-200 text-4xl sm:text-xl font-semibold">
+      <Link
+        href="/"
+        linkClassName="text-slate-200 text-4xl sm:text-xl font-semibold"
+      >
         Ben Adamsky
-      </h1>
+      </Link>
       <Nav>
         {HEADER.map((item) => (
           <NavItem

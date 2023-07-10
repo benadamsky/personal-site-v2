@@ -17,7 +17,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative h-[calc(100%-100px)] sm:h-[calc(100%-60px)] w-full flex flex-col-reverse sm:flex-row sm:justify-between items-center sm:items-end pb-6 px-12 xl:px-48">
+    <footer className="absolute bottom-0 w-full flex flex-col-reverse sm:flex-row justify-between items-center pb-6 px-12 xl:px-48">
       <Link
         href="https://github.com/benadamsky/personal-site-v2"
         rel="noopener noreferrer"

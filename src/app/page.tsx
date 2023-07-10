@@ -27,7 +27,7 @@ const Home = () => {
 
   return (
     <main
-      className="absolute top-0 h-full w-full cursor-cell"
+      className="relative h-full cursor-cell"
       onMouseMove={handleMouseMove}
       style={{
         backgroundImage: `url('/ba.png')`,

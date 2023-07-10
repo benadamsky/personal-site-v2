@@ -1,19 +1,24 @@
 'use client';
 import { useState, useEffect } from 'react';
 
+const ESTIMATED_SPOTLIGHT_SIZE = 2000;
+
 const Home = () => {
   const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
-  const [spotlightSize, setSpotlightSize] = useState(2000);
+  const [spotlightSize, setSpotlightSize] = useState(ESTIMATED_SPOTLIGHT_SIZE);
+  const [viewportHeight, setViewportHeight] = useState('100vh');
 
   useEffect(() => {
-    setSpotlightSize(
-      Math.sqrt(window.innerWidth ** 2 + window.innerHeight ** 2)
-    );
     const resizeListener = () => {
       setSpotlightSize(
         Math.sqrt(window.innerWidth ** 2 + window.innerHeight ** 2)
       );
+
+      setViewportHeight(`${window.innerHeight}px`);
     };
+
+    resizeListener();
+
     window.addEventListener('resize', resizeListener);
 
     return () => {
@@ -27,9 +32,10 @@ const Home = () => {
 
   return (
     <main
-      className="relative h-screen"
+      className="relative"
       onMouseMove={handleMouseMove}
       style={{
+        height: viewportHeight,
         backgroundImage: `url('/ba.png')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center center'

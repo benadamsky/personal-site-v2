@@ -4,7 +4,7 @@ import ResumeSidebar from '@/components/ResumeSidebar';
 
 const Resume = () => {
   return (
-    <div className="py-32 px-4 sm:px-12 xl:px-48 flex flex-col lg:flex-row justify-between items-center lg:items-start">
+    <div className="py-32 px-4 sm:px-12 xl:px-48 flex flex-col lg:flex-row justify-between items-center lg:items-start bg-black">
       <div className="sm:w-2/3 space-y-12">
         <ResumeAbout />
         <ResumeExperience />

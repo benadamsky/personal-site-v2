@@ -1,25 +1,23 @@
 import { FC, ReactNode } from 'react';
 
-interface LinkProps {
+interface NavLinkProps {
   href: string;
   children: ReactNode;
-  target?: string;
-  rel?: string;
+  external?: boolean;
   linkClassName?: string;
 }
 
-const Link: FC<LinkProps> = ({
+const NavLink: FC<NavLinkProps> = ({
   href,
   children,
-  target,
-  rel,
+  external,
   linkClassName = 'text-base'
 }) => (
   <a
     href={href}
-    className={`text-slate-200 hover:text-white duration-200 ${linkClassName}`}
-    target={target}
-    rel={rel}
+    className={`hover:text-white hover:underline hover:underline-offset-4 duration-200 ${linkClassName}`}
+    target={external ? '_blank' : '_self'}
+    rel={external ? 'noopener noreferrer' : ''}
   >
     {children}
   </a>
@@ -36,10 +34,10 @@ const Nav: FC<NavProps> = ({ children, navClassName = 'space-x-8' }) => (
   </nav>
 );
 
-const NavItem: FC<LinkProps> = (props) => (
+const NavItem: FC<NavLinkProps> = (props) => (
   <li>
-    <Link {...props}>{props.children}</Link>
+    <NavLink {...props}>{props.children}</NavLink>
   </li>
 );
 
-export { Link, Nav, NavItem };
+export { Nav, NavLink, NavItem };

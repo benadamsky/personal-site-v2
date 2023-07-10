@@ -1,4 +1,4 @@
-import { Link, Nav, NavItem } from './Nav';
+import { Nav, NavItem } from './Nav';
 
 const Header = () => {
   const HEADER = [
@@ -14,12 +14,12 @@ const Header = () => {
 
   return (
     <header className="z-20 absolute top-0 w-full flex flex-col sm:flex-row space-y-2 items-center justify-between pt-6 px-0 sm:px-12 xl:px-48">
-      <Link
+      <a
         href="/"
-        linkClassName="text-slate-200 text-4xl sm:text-xl font-semibold"
+        className="text-4xl sm:text-xl font-semibold hover:text-white duration-200"
       >
         Ben Adamsky
-      </Link>
+      </a>
       <Nav>
         {HEADER.map((item) => (
           <NavItem

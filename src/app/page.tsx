@@ -27,7 +27,7 @@ const Home = () => {
 
   return (
     <main
-      className="relative h-screen cursor-cell"
+      className="relative h-screen"
       onMouseMove={handleMouseMove}
       style={{
         backgroundImage: `url('/ba.png')`,

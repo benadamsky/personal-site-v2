@@ -39,7 +39,7 @@ const ProjectItem: FC<ProjectItemProps> = ({ title, children }) => {
 
 const ResumeSidebar = () => {
   return (
-    <div className="space-y-16">
+    <div className="space-y-8 lg:space-y-16">
       <SidebarItem title="Contact">
         <NavLink href="/" linkClassName="block underline underline-offset-4">
           benadamsky.com

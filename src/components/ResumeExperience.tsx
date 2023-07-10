@@ -43,7 +43,7 @@ const ExperienceList: FC<ExperienceListProps> = ({ children }) => {
 const ResumeExperience = () => {
   return (
     <div>
-      <h2 className="text-4xl font-semibold mb-8">Experience</h2>
+      <h2 className="text-4xl font-semibold mb-3">Experience</h2>
       <div className="space-y-8">
         <ExperienceItem
           role="Software Engineer"
@@ -137,9 +137,9 @@ const ResumeExperience = () => {
               virtual offices in a dynamic, venture-backed tech startup
             </li>
             <li>
-              Part of the core team responsible for an MVP that secured $15.5M in
-              funding from investors such as Naval Ravikant, Sahil Lavingia, and
-              Homebrew
+              Part of the core team responsible for an MVP that secured $15.5M
+              in funding from investors such as Naval Ravikant, Sahil Lavingia,
+              and Homebrew
             </li>
             <li>
               Played a key role in making major architectural decisions of the

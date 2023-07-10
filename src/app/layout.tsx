@@ -20,7 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full">
-      <body className={`${poppins.className} h-fit relative text-slate-100 cursor-cell`}>
+      <body
+        className={`${poppins.className} h-fit relative text-slate-100 cursor-cell`}
+      >
         <Header />
         {children}
         <Footer />

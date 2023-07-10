@@ -97,6 +97,15 @@ const ResumeSidebar = () => {
         <p className="mt-2">Coursework toward B.S. in Computer Science</p>
         <p>Rutgers, The State University of New Jersey, New Brunswick</p>
       </SidebarItem>
+      <div className="text-center lg:text-left">
+        <a
+          href="/resume.pdf"
+          download="BenAdamsky-Resume.pdf"
+          className="bg-slate-100 hover:bg-white duration-200 py-4 px-6 text-black rounded-md block lg:inline-block"
+        >
+          Download PDF
+        </a>
+      </div>
     </div>
   );
 };

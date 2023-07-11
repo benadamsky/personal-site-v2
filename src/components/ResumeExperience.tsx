@@ -49,7 +49,7 @@ const ResumeExperience = () => {
           role="Software Engineer"
           company="Freeport"
           description="A web3 platform dedicated to simplifying fine art investing"
-          start="Dec 2020"
+          start="Dec 2022"
           end="Present"
         >
           <ExperienceList>

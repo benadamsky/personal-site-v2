@@ -46,11 +46,20 @@ const ResumeExperience = () => {
       <h2 className="text-4xl font-semibold mb-3">Experience</h2>
       <div className="space-y-8">
         <ExperienceItem
+          role="Co-Founder, CTO"
+          company="Ponder"
+          description="A web3 social survey platform"
+          start="Dec 2023"
+          end="Present"
+        >
+          <div />
+        </ExperienceItem>
+        <ExperienceItem
           role="Software Engineer"
           company="Freeport"
           description="A web3 platform dedicated to simplifying fine art investing"
           start="Dec 2022"
-          end="Present"
+          end="Apr 2024"
         >
           <ExperienceList>
             <li>

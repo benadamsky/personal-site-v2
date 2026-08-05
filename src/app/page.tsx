@@ -1,4 +1,5 @@
 import NeuralField from '@/components/NeuralField';
+import ProjectNodes from '@/components/ProjectNodes';
 
 const Home = () => {
   return (
@@ -14,22 +15,8 @@ const Home = () => {
             I build companies
             <span>from the code up.</span>
           </h1>
-          <p className="atlas-intro">
-            I&apos;m Ben Adamsky, co-founder &amp; CTO of Dreamwork. Before
-            that: founding engineer at Branch through a $15.5M raise, top 1% of
-            engineers on Upwork, and core engineer on Freeport&apos;s tokenized
-            Warhol launch — shipping end to end since high school.
-          </p>
+          <ProjectNodes />
           <div className="hero-actions">
-            <a
-              className="signal-link"
-              href="https://www.dreamworkhq.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Enter Dreamwork
-              <span aria-hidden="true">↗</span>
-            </a>
             <a className="quiet-link" href="mailto:hi@benadamsky.com">
               hi@benadamsky.com
             </a>

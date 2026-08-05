@@ -33,6 +33,14 @@ type Pulse = {
   speed: number;
 };
 
+type Bolt = {
+  sx: number;
+  sy: number;
+  target: number;
+  t: number;
+  cascade: boolean;
+};
+
 const COPPER = [216, 164, 109] as const;
 const CYAN = [110, 231, 221] as const;
 const BONE = [240, 236, 228] as const;
@@ -64,6 +72,7 @@ const NeuralField = () => {
     let edges: Edge[] = [];
     let adjacency: number[][] = [];
     let pulses: Pulse[] = [];
+    let bolts: Bolt[] = [];
 
     let center = { x: width * 0.66, y: height * 0.5 };
     let radius = Math.min(width * 0.33, height * 0.44);
@@ -182,6 +191,7 @@ const NeuralField = () => {
       });
 
       pulses = [];
+      bolts = [];
     };
 
     const resize = () => {
@@ -224,9 +234,9 @@ const NeuralField = () => {
       adjacency[index].forEach((edgeIndex) => spawnPulse(edgeIndex, index));
     };
 
-    const cascade = (screenX: number, screenY: number, now: number) => {
+    const nearestNeuron = (screenX: number, screenY: number, cap = Infinity) => {
       let origin = -1;
-      let best = 200 * 200;
+      let best = cap;
       neurons.forEach((neuron, index) => {
         const dx = neuron.sx - screenX;
         const dy = neuron.sy - screenY;
@@ -236,8 +246,10 @@ const NeuralField = () => {
           origin = index;
         }
       });
-      if (origin === -1) return;
+      return origin;
+    };
 
+    const scheduleCascade = (origin: number, now: number) => {
       const depths = new Map<number, number>([[origin, 0]]);
       const queue = [origin];
       while (queue.length) {
@@ -255,6 +267,28 @@ const NeuralField = () => {
       }
       depths.forEach((depth, index) => {
         neurons[index].fireAt = now + depth * 90;
+      });
+    };
+
+    const cascade = (screenX: number, screenY: number, now: number) => {
+      const origin = nearestNeuron(screenX, screenY, 200 * 200);
+      if (origin === -1) return;
+      scheduleCascade(origin, now);
+    };
+
+    const handleSignal = (event: Event) => {
+      const detail = (
+        event as CustomEvent<{ x: number; y: number; mode: string }>
+      ).detail;
+      if (!detail) return;
+      const target = nearestNeuron(detail.x, detail.y);
+      if (target === -1) return;
+      bolts.push({
+        sx: detail.x,
+        sy: detail.y,
+        target,
+        t: 0,
+        cascade: detail.mode === 'cascade'
       });
     };
 
@@ -468,6 +502,40 @@ const NeuralField = () => {
         return true;
       });
 
+      bolts = bolts.filter((bolt) => {
+        bolt.t += 0.045 * (dt / 16.7);
+        const target = neurons[bolt.target];
+        if (bolt.t >= 1) {
+          if (bolt.cascade) scheduleCascade(bolt.target, time);
+          else fire(bolt.target);
+          return false;
+        }
+        const eased = bolt.t * bolt.t * (3 - 2 * bolt.t);
+        const headX = bolt.sx + (target.sx - bolt.sx) * eased;
+        const headY = bolt.sy + (target.sy - bolt.sy) * eased;
+        const tail = Math.max(eased - 0.22, 0);
+        const tailX = bolt.sx + (target.sx - bolt.sx) * tail;
+        const tailY = bolt.sy + (target.sy - bolt.sy) * tail;
+
+        context.beginPath();
+        context.moveTo(tailX, tailY);
+        context.lineTo(headX, headY);
+        context.strokeStyle = rgba(bolt.cascade ? CYAN : COPPER, 0.4);
+        context.lineWidth = 1.2;
+        context.stroke();
+
+        context.beginPath();
+        context.arc(headX, headY, 5, 0, Math.PI * 2);
+        context.fillStyle = rgba(bolt.cascade ? CYAN : COPPER, 0.18);
+        context.fill();
+
+        context.beginPath();
+        context.arc(headX, headY, 1.8, 0, Math.PI * 2);
+        context.fillStyle = rgba(BONE, 0.9);
+        context.fill();
+        return true;
+      });
+
       const corePulse = 1 + Math.sin(time * 0.0016) * 0.14;
       context.beginPath();
       context.arc(center.x, center.y, 3, 0, Math.PI * 2);
@@ -512,6 +580,7 @@ const NeuralField = () => {
 
     const handleClick = (event: PointerEvent) => {
       if (window.scrollY > height * 0.8) return;
+      if ((event.target as HTMLElement | null)?.closest('a, button')) return;
       cascade(event.clientX, event.clientY, lastTime);
     };
 
@@ -522,6 +591,7 @@ const NeuralField = () => {
     if (!reducedMotion) {
       window.addEventListener('pointermove', handlePointer);
       window.addEventListener('pointerdown', handleClick);
+      window.addEventListener('neural-signal', handleSignal);
       document.documentElement.addEventListener('mouseleave', handleLeave);
     }
 
@@ -530,6 +600,7 @@ const NeuralField = () => {
       window.removeEventListener('resize', resize);
       window.removeEventListener('pointermove', handlePointer);
       window.removeEventListener('pointerdown', handleClick);
+      window.removeEventListener('neural-signal', handleSignal);
       document.documentElement.removeEventListener('mouseleave', handleLeave);
     };
   }, []);

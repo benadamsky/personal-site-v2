@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Header = () => {
   return (
@@ -7,7 +8,7 @@ const Header = () => {
         Skip to content
       </a>
       <header className="site-header">
-        <a href="/" className="brand" aria-label="Ben Adamsky, home">
+        <Link href="/" className="brand" aria-label="Ben Adamsky, home">
           <span className="brand-mark">
             <Image
               src="/ben-adamsky-pfp.jpg"
@@ -21,7 +22,7 @@ const Header = () => {
             <strong>Ben Adamsky</strong>
             <small>Building Dreamwork</small>
           </span>
-        </a>
+        </Link>
 
         <nav aria-label="Primary navigation">
           <a href="/resume">Resume</a>

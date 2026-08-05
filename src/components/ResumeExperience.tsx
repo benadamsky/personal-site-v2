@@ -50,8 +50,7 @@ const experiences = [
     start: 'Dec 2023',
     end: 'Present',
     items: [
-      'Lead all engineering for Dreamwork, an agent-first job search platform — architecture, product, and infrastructure end to end',
-      'Built an agentic engineering workflow, directing fleets of AI coding agents to ship production features at a multi-engineer pace'
+      'Lead all engineering for Dreamwork — architecture, product, and infrastructure end to end'
     ]
   },
   {

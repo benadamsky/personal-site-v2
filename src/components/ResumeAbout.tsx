@@ -7,10 +7,8 @@ const ResumeAbout = () => {
       </h2>
       <p className="mt-3">
         End-to-end engineer with a decade of shipping across startups —
-        architecture, interface, and infrastructure. Currently CTO of Dreamwork,
-        building agent-first software and running an agentic engineering
-        practice: designing the systems, then directing the AI agents that help
-        build them.
+        architecture, interface, and infrastructure. Currently co-founder and
+        CTO of Dreamwork, leading engineering from first commit to production.
       </p>
     </div>
   );

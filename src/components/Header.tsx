@@ -24,7 +24,7 @@ const Header = () => {
         </a>
 
         <nav aria-label="Primary navigation">
-          <a href="/#signal">Philosophy</a>
+          <a href="/#story">Story</a>
           <a href="/#now">Now</a>
           <a href="/resume">Resume</a>
           <a className="header-connect" href="mailto:hi@benadamsky.com">

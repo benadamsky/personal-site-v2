@@ -45,11 +45,14 @@ const ExperienceList: FC<ExperienceListProps> = ({ items }) => (
 const experiences = [
   {
     role: 'Co-Founder, CTO',
-    company: 'Ponder',
-    description: 'A web3 social survey platform',
+    company: 'Ponder (Dreamwork)',
+    description: 'An agent-first job search platform',
     start: 'Dec 2023',
     end: 'Present',
-    items: []
+    items: [
+      'Lead all engineering for Dreamwork, an agent-first job search platform — architecture, product, and infrastructure end to end',
+      'Built an agentic engineering workflow, directing fleets of AI coding agents to ship production features at a multi-engineer pace'
+    ]
   },
   {
     role: 'Software Engineer',

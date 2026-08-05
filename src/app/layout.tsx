@@ -18,25 +18,25 @@ const plexMono = IBM_Plex_Mono({
 
 export const metadata = {
   metadataBase: new URL('https://www.benadamsky.com'),
-  title: 'Ben Adamsky — Building paths through uncertainty',
+  title: 'Ben Adamsky — I build systems that think',
   description:
-    'Ben Adamsky is a software developer and co-founder / CTO of Dreamwork. He builds products for the moments when people, work, and technology need a way forward.',
+    'Ben Adamsky is an engineer and two-time founder, co-founder / CTO of Dreamwork. A decade of shipping end to end, now deep in agentic engineering.',
   alternates: {
     canonical: '/'
   },
   openGraph: {
-    title: 'Ben Adamsky — Building paths through uncertainty',
+    title: 'Ben Adamsky — I build systems that think',
     description:
-      'Software developer and co-founder / CTO of Dreamwork, building the paths that make hard next moves obvious.',
+      'Engineer and two-time founder. Co-founder / CTO of Dreamwork, building agent-first software.',
     url: 'https://www.benadamsky.com',
     siteName: 'Ben Adamsky',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ben Adamsky — Building paths through uncertainty',
+    title: 'Ben Adamsky — I build systems that think',
     description:
-      'Software developer and co-founder / CTO of Dreamwork, building the paths that make hard next moves obvious.'
+      'Engineer and two-time founder. Co-founder / CTO of Dreamwork, building agent-first software.'
   }
 };
 

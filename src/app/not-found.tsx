@@ -1,14 +1,14 @@
-import RouteField from '@/components/RouteField';
+import NeuralField from '@/components/NeuralField';
 
 const NotFound = () => {
   return (
     <main id="main-content" className="not-found">
-      <RouteField />
-      <p className="section-index">Route unavailable · 404</p>
-      <h1>This path ends here.</h1>
+      <NeuralField />
+      <p className="section-index">Signal lost · 404</p>
+      <h1>This synapse never fired.</h1>
       <p>The page moved, disappeared, or never existed.</p>
       <a className="signal-link" href="/">
-        Return to the map <span aria-hidden="true">↗</span>
+        Back to the network <span aria-hidden="true">↗</span>
       </a>
     </main>
   );

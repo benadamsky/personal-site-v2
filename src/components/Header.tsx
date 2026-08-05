@@ -1,37 +1,38 @@
-import { Nav, NavItem } from './Nav';
+import Image from 'next/image';
 
 const Header = () => {
-  const HEADER = [
-    {
-      label: 'Connect',
-      link: 'mailto:hi@benadamsky.com'
-    },
-    {
-      label: 'Resume',
-      link: '/resume'
-    }
-  ];
-
   return (
-    <header className="z-20 absolute top-0 w-full flex flex-col sm:flex-row space-y-2 items-center justify-between pt-6 px-0 sm:px-12 xl:px-48">
-      <a
-        href="/"
-        className="text-4xl sm:text-xl font-semibold hover:text-white duration-200"
-      >
-        Ben Adamsky
+    <>
+      <a className="skip-link" href="#main-content">
+        Skip to content
       </a>
-      <Nav>
-        {HEADER.map((item) => (
-          <NavItem
-            href={item.link}
-            linkClassName="text-xl sm:text-lg"
-            key={item.label}
-          >
-            {item.label}
-          </NavItem>
-        ))}
-      </Nav>
-    </header>
+      <header className="site-header">
+        <a href="/" className="brand" aria-label="Ben Adamsky, home">
+          <span className="brand-mark">
+            <Image
+              src="/ben-adamsky-pfp.jpg"
+              alt=""
+              fill
+              priority
+              sizes="40px"
+            />
+          </span>
+          <span className="brand-copy">
+            <strong>Ben Adamsky</strong>
+            <small>Building Dreamwork</small>
+          </span>
+        </a>
+
+        <nav aria-label="Primary navigation">
+          <a href="/#signal">Philosophy</a>
+          <a href="/#now">Now</a>
+          <a href="/resume">Resume</a>
+          <a className="header-connect" href="mailto:hi@benadamsky.com">
+            Connect <span aria-hidden="true">↗</span>
+          </a>
+        </nav>
+      </header>
+    </>
   );
 };
 

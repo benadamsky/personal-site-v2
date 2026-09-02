@@ -44,7 +44,12 @@ const Shelf = ({ sw, sh, active }: ShelfProps) => {
               e.stopPropagation();
               setChosen(chosen === b.spine ? null : b.spine);
             }}
-          />
+          >
+            {/* printed on the spine, reads bottom to top like a real book */}
+            <span className="spine__title" style={{ fontSize: sw * 0.0105 }}>
+              {b.title}
+            </span>
+          </button>
         );
       })}
       <div className={`wallnote${book && active ? ' is-on' : ''}`} style={pct(regions.wall)}>

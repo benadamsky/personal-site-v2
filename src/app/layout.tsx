@@ -1,30 +1,21 @@
 import './globals.css';
-import { Poppins } from 'next/font/google';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { Fraunces } from 'next/font/google';
 
-const poppins = Poppins({
+const fraunces = Fraunces({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800', '900']
+  axes: ['opsz', 'SOFT'],
+  variable: '--font-serif'
 });
 
 export const metadata = {
   title: 'Ben Adamsky',
-  description: 'Building stuff - 2x founder, software engineer'
+  description: 'A room, a desk, a cat, some books, and the work.'
 };
 
-const RootLayout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <html lang="en" className="h-full">
-      <body
-        className={`${poppins.className} h-fit relative text-slate-100 cursor-cell`}
-      >
-        <Header />
-        {children}
-        <Footer />
-      </body>
-    </html>
-  );
-};
+const RootLayout = ({ children }: { children: React.ReactNode }) => (
+  <html lang="en" className={fraunces.variable}>
+    <body>{children}</body>
+  </html>
+);
 
 export default RootLayout;

@@ -153,7 +153,7 @@ const Room = () => {
           <img className="room__media" src={media.poster} alt="" draggable={false} />
         )}
 
-        {sw > 0 && (
+        {sw > 0 && !media.video && (
           <Rain
             className="room__layer"
             width={(win.w / 100) * sw}

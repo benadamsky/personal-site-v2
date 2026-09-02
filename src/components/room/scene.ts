@@ -1,5 +1,6 @@
 // Everything here is in percent of the scene image (0..100), so it survives
-// any viewport size. Measured against public/room.jpg (1672x941).
+// any viewport size. Measured against the master still; the video was
+// generated from that frame so the geometry carries over (1920x1080).
 export interface Rect {
   x: number;
   y: number;
@@ -7,12 +8,12 @@ export interface Rect {
   h: number;
 }
 
-export const SCENE_ASPECT = 1672 / 941;
+export const SCENE_ASPECT = 16 / 9;
 export const OVERSCAN = 1.18;
 
 export const media = {
   poster: '/room.jpg',
-  video: undefined as string | undefined
+  video: '/room.mp4' as string | undefined
 };
 
 export const regions: Record<

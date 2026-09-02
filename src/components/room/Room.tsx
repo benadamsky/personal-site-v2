@@ -5,6 +5,7 @@ import Panel from './Panel';
 import WorkPanel from './WorkPanel';
 import BooksPanel from './BooksPanel';
 import { SCENE_ASPECT, OVERSCAN, media, regions, Rect } from './scene';
+import { setup } from '@/data/setup';
 
 type Open = 'work' | 'books' | null;
 
@@ -201,6 +202,18 @@ const Room = () => {
         <button className="hotspot" style={pct(regions.monitor)} onClick={() => setOpen('work')}>
           <span className="hotspot__label">what I&apos;m working on</span>
         </button>
+        {setup.map((g) => (
+          <a
+            key={g.id}
+            className="hotspot hotspot--gear"
+            style={pct(regions[g.id])}
+            href={g.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="hotspot__label">{g.name}</span>
+          </a>
+        ))}
       </div>
 
       <span className="room__name">Ben Adamsky</span>

@@ -16,7 +16,16 @@ export const media = {
 };
 
 export const regions: Record<
-  'window' | 'cat' | 'candle' | 'lamp' | 'shelf' | 'monitor' | 'photo',
+  | 'window'
+  | 'cat'
+  | 'candle'
+  | 'lamp'
+  | 'shelf'
+  | 'monitor'
+  | 'photo'
+  | 'headphones'
+  | 'mouse'
+  | 'keyboard',
   Rect
 > = {
   window: { x: 72.8, y: 0, w: 22.8, h: 69 },
@@ -24,6 +33,9 @@ export const regions: Record<
   candle: { x: 4.5, y: 74, w: 5, h: 11 },
   lamp: { x: 62, y: 46, w: 6.5, h: 10 },
   shelf: { x: 0.5, y: 1, w: 24.5, h: 70 },
-  monitor: { x: 28, y: 40, w: 31, h: 31 },
-  photo: { x: 60, y: 69, w: 7.5, h: 10 }
+  monitor: { x: 27.5, y: 39.5, w: 29, h: 31 },
+  photo: { x: 64.3, y: 70.5, w: 6.6, h: 9.5 },
+  headphones: { x: 56.5, y: 58, w: 7.5, h: 21 },
+  mouse: { x: 62.3, y: 81, w: 4.8, h: 7 },
+  keyboard: { x: 57.5, y: 80, w: 4.8, h: 7 }
 };

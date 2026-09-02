@@ -103,18 +103,6 @@ body {
   border-radius: 6px;
   outline-offset: 6px;
 }
-.hotspot::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 6px;
-  box-shadow: inset 0 0 0 1px rgba(243, 233, 216, 0);
-  transition: box-shadow 400ms ease;
-}
-.hotspot:hover::after,
-.hotspot:focus-visible::after {
-  box-shadow: inset 0 0 0 1px rgba(243, 233, 216, 0.35);
-}
 .hotspot__label {
   position: absolute;
   left: 50%;
@@ -132,6 +120,14 @@ body {
 .hotspot:focus-visible .hotspot__label {
   opacity: 1;
   transform: translate(-50%, -12px);
+}
+
+.hotspot--gear .hotspot__label {
+  font-size: 14px;
+  color: var(--ink-dim);
+}
+.hotspot--gear:hover .hotspot__label {
+  color: var(--ink);
 }
 
 /* chrome */

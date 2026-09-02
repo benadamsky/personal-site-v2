@@ -25,15 +25,10 @@ export const CLIPS = {
     prompt:
       'The man works at the screen: his right hand nudges the mouse slightly and clicks once, his head tilts a little as he reads, shoulders relaxed. The cat sleeps, its side rising and falling. Rain falls softly outside, the candle flame flickers.'
   },
-  'cat-stretch': {
+  'cat-twitch': {
     duration: '8',
     prompt:
-      'The sleeping tuxedo cat on the windowsill slowly stretches one front paw forward, yawns, then curls back up and settles into exactly the same sleeping position. The man stays still, right hand resting on the mouse, breathing slowly. Rain falls softly outside, the candle flame flickers.'
-  },
-  'cat-look': {
-    duration: '8',
-    prompt:
-      'The tuxedo cat on the windowsill lifts its head, looks out at the rainy forest for a moment, ears turning, then lays its head back down and returns to exactly the same sleeping position. The man stays still, right hand resting on the mouse. Rain falls softly outside, the candle flame flickers.'
+      'The tuxedo cat stays curled up asleep on the windowsill the whole time. Its side rises and falls slowly and one ear flicks twice. Its tail stays tucked and completely still. It never lifts its head, never moves its tail, never changes position. The man stays still, right hand resting on the mouse, breathing slowly. Rain falls softly outside, the candle flame flickers.'
   },
   lean: {
     duration: '8',
@@ -114,7 +109,7 @@ const generate = async (id) => {
   // Normalize every clip to identical encode settings so chaining is seamless.
   const out = path.join(publicDir, `${id}.mp4`);
   execSync(
-    `ffmpeg -y -loglevel error -i "${raw}" -an -vf "scale=1920:1080:flags=lanczos,fps=24,format=yuv420p" ` +
+    `ffmpeg -y -loglevel error -i "${raw}" -an -vf "scale=1920:1080:flags=lanczos,minterpolate=fps=48:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1,format=yuv420p" ` +
       `-c:v libx264 -preset slow -crf 21 -movflags +faststart "${out}"`
   );
   console.log(`${id}: saved ${out}`);

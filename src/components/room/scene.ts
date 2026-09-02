@@ -1,3 +1,5 @@
+import type { Clip } from './ClipPlayer';
+
 // Everything here is in percent of the scene image (0..100), so it survives
 // any viewport size. Measured against the master still; the video was
 // generated from that frame so the geometry carries over (1920x1080).
@@ -12,10 +14,17 @@ export const SCENE_ASPECT = 16 / 9;
 export const OVERSCAN = 1.18;
 
 export const media = {
-  poster: '/room.jpg',
+  still: '/room.jpg',
+  // First frame of the idle clip, so the swap from poster to video is a no-op.
+  poster: '/room-poster.jpg',
   // Event clips. Each begins and ends on the poster frame; the player chains
   // them at random. Drop a new clip in public/clips and list it here.
-  clips: ['/clips/idle.mp4', '/clips/work.mp4', '/clips/cat-stretch.mp4', '/clips/cat-look.mp4', '/clips/lean.mp4'] as string[]
+  clips: [
+    { src: '/clips/idle.mp4', weight: 5 },
+    { src: '/clips/work.mp4', weight: 4 },
+    { src: '/clips/cat-twitch.mp4', weight: 1 },
+    { src: '/clips/lean.mp4', weight: 1 }
+  ] as Clip[]
 };
 export const hasVideo = media.clips.length > 0;
 

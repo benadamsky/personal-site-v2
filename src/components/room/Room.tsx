@@ -143,7 +143,7 @@ const Room = () => {
           <ClipPlayer clips={media.clips} poster={media.poster} className="room__media" />
         ) : (
           // eslint-disable-next-line @next/next/no-img-element
-          <img className="room__media" src={media.poster} alt="" draggable={false} />
+          <img className="room__media" src={media.still} alt="" draggable={false} />
         )}
 
         {sw > 0 && !hasVideo && (
@@ -161,7 +161,7 @@ const Room = () => {
             className="breath room__layer"
             style={{
               ...pct(cat),
-              backgroundImage: `url(${media.poster})`,
+              backgroundImage: `url(${media.still})`,
               backgroundSize: `${sw}px ${sh}px`,
               backgroundPosition: `${-(cat.x / 100) * sw}px ${-(cat.y / 100) * sh}px`
             }}

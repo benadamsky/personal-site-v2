@@ -106,12 +106,10 @@ const generate = async (id) => {
   if (!url) throw new Error(`${id}: no video url in ${JSON.stringify(result).slice(0, 300)}`);
   const raw = path.join(workDir, `${id}.raw.mp4`);
   writeFileSync(raw, Buffer.from(await (await fetch(url)).arrayBuffer()));
-  // Normalize every clip to identical encode settings so chaining is seamless.
+  // Normalize: 48fps, and dissolve from/to the shared master frame at both
+  // ends so every clip starts and ends on identical pixels.
   const out = path.join(publicDir, `${id}.mp4`);
-  execSync(
-    `ffmpeg -y -loglevel error -i "${raw}" -an -vf "scale=1920:1080:flags=lanczos,minterpolate=fps=48:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1,format=yuv420p" ` +
-      `-c:v libx264 -preset slow -crf 21 -movflags +faststart "${out}"`
-  );
+  execSync(`sh scripts/clip-normalize.sh "${still}" "${raw}" "${out}"`);
   console.log(`${id}: saved ${out}`);
 };
 

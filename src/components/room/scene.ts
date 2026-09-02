@@ -15,7 +15,7 @@ export const OVERSCAN = 1.18;
 
 export const media = {
   still: '/room.jpg',
-  // First frame of the idle clip, so the swap from poster to video is a no-op.
+  // Same frame every clip opens and closes on, so poster -> video is a no-op.
   poster: '/room-poster.jpg',
   // Event clips. Each begins and ends on the poster frame; the player chains
   // them at random. Drop a new clip in public/clips and list it here.

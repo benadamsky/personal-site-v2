@@ -13,7 +13,9 @@ interface ClipPlayerProps {
   className?: string;
 }
 
-const FADE_MS = 160;
+// Clips share identical head/tail frames (see scripts/clip-normalize.sh), so
+// this only papers over decode timing; it is not a visual crossfade.
+const FADE_MS = 80;
 
 const pick = (clips: Clip[], avoid: string[]) => {
   const pool = clips.filter((c) => !avoid.includes(c.src));

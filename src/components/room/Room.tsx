@@ -13,6 +13,7 @@ import {
   cat as cleo,
   regions,
   focusRect,
+  focusMaxScale,
   Focus,
   Rect
 } from './scene';
@@ -99,10 +100,10 @@ const Room = () => {
   // Camera that frames `r` at ~86% of the viewport, clamped so the scene
   // still covers the screen.
   const focusCam = useCallback(
-    (r: Rect): Cam => {
+    (r: Rect, maxScale = 3.6): Cam => {
       const rw = (r.w / 100) * sw;
       const rh = (r.h / 100) * sh;
-      const s = Math.min((vw * 0.86) / rw, (vh * 0.86) / rh, 3.6);
+      const s = Math.min((vw * 0.86) / rw, (vh * 0.86) / rh, maxScale);
       const cx = ((r.x + r.w / 2) / 100) * sw;
       const cy = ((r.y + r.h / 2) / 100) * sh;
       return {
@@ -125,7 +126,7 @@ const Room = () => {
   useEffect(() => {
     if (sw === 0) return;
     if (focus) {
-      target.current = focusCam(focusRect[focus]);
+      target.current = focusCam(focusRect[focus], focusMaxScale[focus]);
       const t = setTimeout(() => setSettled(true), 700);
       return () => clearTimeout(t);
     }
@@ -242,7 +243,7 @@ const Room = () => {
 
   const win = regions.window;
   const cat = regions.cat;
-  const cam = focus ? focusCam(focusRect[focus]) : null;
+  const cam = focus ? focusCam(focusRect[focus], focusMaxScale[focus]) : null;
   const cls = ['room', dragging && 'is-dragging', focus && 'is-focused', touch && 'is-touch', pulse && 'is-pulse']
     .filter(Boolean)
     .join(' ');
@@ -317,7 +318,7 @@ const Room = () => {
         <button className="hotspot" style={{ ...pct(regions.monitor), '--i': 1 } as React.CSSProperties} onClick={spot('monitor')}>
           <span className="hotspot__label">what I&apos;m working on</span>
         </button>
-        <button className="hotspot" style={{ ...pct(regions.drawer), '--i': 2 } as React.CSSProperties} onClick={spot('drawer')}>
+        <button className="hotspot" style={{ ...pct(regions.paper), '--i': 2 } as React.CSSProperties} onClick={spot('paper')}>
           <span className="hotspot__label">before that</span>
         </button>
         <button
@@ -351,8 +352,12 @@ const Room = () => {
           <Screen />
         </div>
       )}
-      {cam && focus === 'drawer' && (
-        <div className={`onobject${settled ? ' is-on' : ''}`} style={onScreen(regions.paper, cam)} onClick={(e) => e.stopPropagation()}>
+      {cam && focus === 'paper' && (
+        <div
+          className={`onobject onobject--paper${settled ? ' is-on' : ''}`}
+          style={{ ...onScreen(regions.paperFace, cam), '--h': `${(regions.paperFace.h / 100) * sh * cam.s}px` } as React.CSSProperties}
+          onClick={(e) => e.stopPropagation()}
+        >
           <Paper />
         </div>
       )}

@@ -310,31 +310,31 @@ body {
   border-bottom: 1px solid rgba(143, 188, 212, 0.4);
 }
 
-/* the sheet from the drawer: paper on the desk */
+/* the sheet on the desk: text laid onto the painted paper, in its perspective */
+.onobject--paper {
+  transform: skewX(14deg) rotate(-1.2deg);
+  transform-origin: 0 0;
+}
 .paper {
   height: 100%;
   box-sizing: border-box;
-  padding: 4.5% 5%;
-  background: #ece2cc;
+  padding: 3% 4%;
   color: #2d2118;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
-  font-size: clamp(10px, 0.88vw, 14px);
-  line-height: 1.35;
-  overflow: auto;
-  scrollbar-width: none;
-  transform: rotate(-0.6deg);
+  font-size: calc(var(--h, 260px) / 21);
+  line-height: 1.32;
+  overflow: hidden;
 }
 .paper__head {
-  margin: 0 0 0.9em;
+  margin: 0 0 0.6em;
   font-weight: 500;
   font-variation-settings: 'SOFT' 100;
-  font-size: 1.15em;
+  font-size: 1.1em;
 }
 .paper__row {
-  margin: 0 0 0.6em;
+  margin: 0 0 0.45em;
   display: grid;
-  grid-template-columns: 7em 6.5em 1fr;
-  gap: 0 1em;
+  grid-template-columns: 6.5em 6em 1fr;
+  gap: 0 0.8em;
 }
 .paper__co {
   font-weight: 500;

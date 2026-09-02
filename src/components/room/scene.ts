@@ -51,20 +51,21 @@ export const regions = {
   headphones: { x: 56.8, y: 58, w: 7.7, h: 22 },
   mouse: { x: 62, y: 81.5, w: 5.5, h: 7.5 },
   keyboard: { x: 55, y: 80.5, w: 3, h: 5.5 },
-  // right-hand desk drawer front, and the desk surface above it
-  drawer: { x: 63, y: 92.5, w: 34, h: 7 },
-  deskRight: { x: 60, y: 72, w: 39, h: 28 },
-  paper: { x: 68.5, y: 76, w: 29, h: 16.5 },
+  // the sheet of paper on the desk (bounding box), and its inner face
+  paper: { x: 70.6, y: 81, w: 14, h: 9 },
+  paperFace: { x: 71.6, y: 82.2, w: 12, h: 7.2 },
   // wall beside the shelf, where a chosen book's note is written
   wall: { x: 31, y: 21, w: 22, h: 17 }
 } satisfies Record<string, Rect>;
 
-export type Focus = 'monitor' | 'shelf' | 'drawer';
+export type Focus = 'monitor' | 'shelf' | 'paper';
 export const focusRect: Record<Focus, Rect> = {
   monitor: regions.monitor,
   shelf: { x: 0.5, y: 4, w: 24.5, h: 67 },
-  drawer: regions.deskRight
+  paper: { x: 68.5, y: 78.5, w: 18.5, h: 13.5 }
 };
+// how far the camera may push in on each object
+export const focusMaxScale: Record<Focus, number> = { monitor: 3.6, shelf: 3.6, paper: 5 };
 
 // Book spines, left to right, top shelf first. Index = position in books.ts.
 export const spines: Rect[] = [

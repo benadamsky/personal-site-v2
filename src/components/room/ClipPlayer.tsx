@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
 export interface Clip {
   src: string;
@@ -11,6 +11,11 @@ interface ClipPlayerProps {
   clips: Clip[];
   poster: string;
   className?: string;
+}
+
+export interface ClipPlayerHandle {
+  /** Interrupt the current clip and dissolve into this one (user-triggered). */
+  playNow: (src: string) => void;
 }
 
 // Clips share identical head/tail frames (see scripts/clip-normalize.sh), so
@@ -46,9 +51,14 @@ const ready = (v: HTMLVideoElement) =>
 // Two stacked <video>s. Every clip starts and ends on the same rest frame, so
 // when one ends we start the other and fade it over in a few frames. Adding an
 // event to the room is just adding a clip to the list.
-const ClipPlayer = ({ clips, poster, className }: ClipPlayerProps) => {
+const ClipPlayer = forwardRef<ClipPlayerHandle, ClipPlayerProps>(function ClipPlayer(
+  { clips, poster, className },
+  ref
+) {
   const a = useRef<HTMLVideoElement>(null);
   const b = useRef<HTMLVideoElement>(null);
+  const api = useRef<ClipPlayerHandle>({ playNow: () => {} });
+  useImperativeHandle(ref, () => ({ playNow: (src) => api.current.playNow(src) }), []);
 
   useEffect(() => {
     const vids = [a.current, b.current];
@@ -56,6 +66,7 @@ const ClipPlayer = ({ clips, poster, className }: ClipPlayerProps) => {
     let active = 0;
     let alive = true;
     let timer: ReturnType<typeof setTimeout> | undefined;
+    const handle = api.current;
 
     const name = (v: HTMLVideoElement) => v.src.split('/').pop() ?? '';
     const load = (v: HTMLVideoElement, src: string) => {
@@ -109,12 +120,39 @@ const ClipPlayer = ({ clips, poster, className }: ClipPlayerProps) => {
       if (vids.indexOf(v) === active) v.play().catch(() => {});
     };
 
+    // User-triggered event: dissolve from wherever we are into the requested
+    // clip. Longer fade than a seam because the frames differ.
+    handle.playNow = (src) => {
+      if (!alive) return;
+      const cur = vids[active]!;
+      const nxt = vids[1 - active]!;
+      clearTimeout(timer);
+      load(nxt, src);
+      ready(nxt).then(() => {
+        if (!alive) return;
+        nxt.play().then(() => {
+          nxt.style.transition = 'opacity 450ms ease';
+          cur.style.transition = 'opacity 450ms ease';
+          active = 1 - active;
+          show(active);
+          timer = setTimeout(() => {
+            if (!alive) return;
+            cur.pause();
+            nxt.style.transition = `opacity ${FADE_MS}ms linear`;
+            cur.style.transition = `opacity ${FADE_MS}ms linear`;
+            load(cur, pick(clips, [name(cur), name(nxt)]));
+          }, 500);
+        }).catch(() => {});
+      });
+    };
+
     vids.forEach((v) => {
       v!.addEventListener('ended', onEnded);
       v!.addEventListener('error', onError);
     });
     return () => {
       alive = false;
+      handle.playNow = () => {};
       clearTimeout(timer);
       vids.forEach((v) => {
         v!.removeEventListener('ended', onEnded);
@@ -137,6 +175,6 @@ const ClipPlayer = ({ clips, poster, className }: ClipPlayerProps) => {
       <video ref={b} {...common} style={{ ...common.style, opacity: 0 }} />
     </>
   );
-};
+});
 
 export default ClipPlayer;

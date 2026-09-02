@@ -12,15 +12,16 @@
 set -e
 rest="$1"; raw="$2"; out="$3"
 TRIM=0.75   # head ramp to drop
+TAIL=0.25   # tail drift toward the end image to drop
 HOLD=0.3    # rest-frame hold at each end
 FADE=0.25   # dissolve length
 dur=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$raw")
-body=$(printf "%.3f" "$(echo "$dur - $TRIM" | bc -l)")
+body=$(printf "%.3f" "$(echo "$dur - $TRIM - $TAIL" | bc -l)")
 off1=$(printf "%.3f" "$(echo "$HOLD - $FADE" | bc -l)")
 off2=$(printf "%.3f" "$(echo "$HOLD + $body - 2 * $FADE" | bc -l)")
 ffmpeg -y -loglevel error \
   -loop 1 -framerate 48 -t "$HOLD" -i "$rest" \
-  -ss "$TRIM" -i "$raw" \
+  -ss "$TRIM" -t "$body" -i "$raw" \
   -loop 1 -framerate 48 -t "$HOLD" -i "$rest" \
   -filter_complex "\
 [0:v]scale=1920:1080:flags=lanczos,format=yuv420p,setsar=1[p0];\

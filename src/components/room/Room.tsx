@@ -4,7 +4,8 @@ import Rain from './Rain';
 import Panel from './Panel';
 import WorkPanel from './WorkPanel';
 import BooksPanel from './BooksPanel';
-import { SCENE_ASPECT, OVERSCAN, media, regions, Rect } from './scene';
+import { SCENE_ASPECT, OVERSCAN, media, hasVideo, regions, Rect } from './scene';
+import ClipPlayer from './ClipPlayer';
 import { setup } from '@/data/setup';
 
 type Open = 'work' | 'books' | null;
@@ -138,22 +139,14 @@ const Room = () => {
       onPointerLeave={endDrag}
     >
       <div ref={sceneRef} className="room__scene" style={{ width: sw, height: sh }}>
-        {media.video ? (
-          <video
-            className="room__media"
-            src={media.video}
-            poster={media.poster}
-            autoPlay
-            muted
-            loop
-            playsInline
-          />
+        {hasVideo && !reduced ? (
+          <ClipPlayer clips={media.clips} poster={media.poster} className="room__media" />
         ) : (
           // eslint-disable-next-line @next/next/no-img-element
           <img className="room__media" src={media.poster} alt="" draggable={false} />
         )}
 
-        {sw > 0 && !media.video && (
+        {sw > 0 && !hasVideo && (
           <Rain
             className="room__layer"
             width={(win.w / 100) * sw}
@@ -163,7 +156,7 @@ const Room = () => {
           />
         )}
 
-        {sw > 0 && !media.video && (
+        {sw > 0 && (!hasVideo || reduced) && (
           <div
             className="breath room__layer"
             style={{

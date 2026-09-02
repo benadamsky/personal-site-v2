@@ -49,6 +49,7 @@ body {
   object-fit: cover;
   display: block;
   pointer-events: none;
+  transition: opacity 180ms linear;
 }
 .room__layer {
   position: absolute;

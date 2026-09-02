@@ -15,3 +15,6 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Scene assets are generated with the Codex CLI image tool (`~/.local/bin/codex exec`),
   masters live outside the repo; `public/room.jpg` is the shipped still.
 - Hotspot geometry is in `src/components/room/scene.ts`, in percent of the image.
+- Splash video is a set of event clips in `public/clips/`, each starting and ending
+  on the master still, chained at random by `ClipPlayer`. Generate new ones with
+  `node scripts/room-clips.mjs <master.png> <work-dir> [clipId ...]` (fal.ai, Seedance 1.5 Pro).

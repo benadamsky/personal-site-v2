@@ -13,8 +13,11 @@ export const OVERSCAN = 1.18;
 
 export const media = {
   poster: '/room.jpg',
-  video: '/room.mp4' as string | undefined
+  // Event clips. Each begins and ends on the poster frame; the player chains
+  // them at random. Drop a new clip in public/clips and list it here.
+  clips: ['/clips/idle.mp4', '/clips/work.mp4', '/clips/cat-stretch.mp4', '/clips/cat-look.mp4', '/clips/lean.mp4'] as string[]
 };
+export const hasVideo = media.clips.length > 0;
 
 export const regions: Record<
   | 'window'
@@ -29,14 +32,14 @@ export const regions: Record<
   | 'keyboard',
   Rect
 > = {
-  window: { x: 72.8, y: 0, w: 22.8, h: 69 },
-  cat: { x: 76.5, y: 62.5, w: 17.5, h: 15 },
-  candle: { x: 4.5, y: 74, w: 5, h: 11 },
+  window: { x: 72.5, y: 0, w: 23.5, h: 70 },
+  cat: { x: 77, y: 62, w: 17.5, h: 15.5 },
+  candle: { x: 4.5, y: 74.5, w: 5, h: 11 },
   lamp: { x: 62, y: 46, w: 6.5, h: 10 },
   shelf: { x: 0.5, y: 1, w: 24.5, h: 70 },
   monitor: { x: 27.5, y: 39.5, w: 29, h: 31 },
-  photo: { x: 64.3, y: 70.5, w: 6.6, h: 9.5 },
-  headphones: { x: 56.5, y: 58, w: 7.5, h: 21 },
-  mouse: { x: 62.3, y: 81, w: 4.8, h: 7 },
-  keyboard: { x: 57.5, y: 80, w: 4.8, h: 7 }
+  photo: { x: 64.5, y: 72.5, w: 6.5, h: 9 },
+  headphones: { x: 56.8, y: 58, w: 7.7, h: 22 },
+  mouse: { x: 62, y: 81.5, w: 5.5, h: 7.5 },
+  keyboard: { x: 55, y: 80.5, w: 3, h: 5.5 }
 };

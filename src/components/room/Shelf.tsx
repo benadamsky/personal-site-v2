@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { books } from '@/data/books';
+import { books, Book } from '@/data/books';
 import { media, spines, regions, Rect } from './scene';
 
 interface ShelfProps {
@@ -16,22 +16,29 @@ const pct = (r: Rect): React.CSSProperties => ({
   height: `${r.h}%`
 });
 
-// Spines that are real books slide out an inch on hover and, when chosen,
-// write a note on the wall beside the shelf. Lives inside the scene so it
-// scales with the camera.
+const status = (b: Book) => {
+  if (b.status === 'listening') return b.percent ? `listening now, ${b.percent}%` : 'listening now';
+  if (b.status === 'finished') return b.finished ? `finished ${b.finished}` : 'finished';
+  return null;
+};
+
+// When the shelf is in focus, the reading list is written on the wall beside
+// it. Hovering a line pulls that book's spine out an inch; choosing one shows
+// the note. Spines are copies of the still, so they scale with the camera.
 const Shelf = ({ sw, sh, active }: ShelfProps) => {
+  const [hot, setHot] = useState<number | null>(null);
   const [chosen, setChosen] = useState<number | null>(null);
-  const book = books.find((b) => b.spine === chosen);
+  const shown = books.filter((b) => spines[b.spine]);
 
   return (
     <>
-      {books.map((b) => {
+      {shown.map((b) => {
         const r = spines[b.spine];
-        if (!r) return null;
+        const out = hot === b.spine || chosen === b.spine;
         return (
           <button
             key={b.spine}
-            className={`spine${chosen === b.spine ? ' is-chosen' : ''}${active ? ' is-live' : ''}`}
+            className={`spine${out ? ' is-out' : ''}${active ? ' is-live' : ''}`}
             style={{
               ...pct(r),
               backgroundImage: `url(${media.detail})`,
@@ -40,26 +47,33 @@ const Shelf = ({ sw, sh, active }: ShelfProps) => {
             }}
             aria-label={b.title}
             tabIndex={active ? 0 : -1}
+            onPointerEnter={() => setHot(b.spine)}
+            onPointerLeave={() => setHot(null)}
             onClick={(e) => {
               e.stopPropagation();
               setChosen(chosen === b.spine ? null : b.spine);
             }}
-          >
-            {/* printed on the spine, reads bottom to top like a real book */}
-            <span className="spine__title" style={{ fontSize: sw * 0.0105 }}>
-              {b.title}
-            </span>
-          </button>
+          />
         );
       })}
-      <div className={`wallnote${book && active ? ' is-on' : ''}`} style={pct(regions.wall)}>
-        {book && (
-          <>
-            <p className="wallnote__title">{book.title}</p>
-            <p className="wallnote__author">{book.author}</p>
-            {book.note && <p className="wallnote__note">{book.note}</p>}
-          </>
-        )}
+      <div className={`wallnote${active ? ' is-on' : ''}`} style={{ ...pct(regions.wall), fontSize: sw * 0.0115 }}>
+        <p className="wallnote__head">On the shelf</p>
+        <ul className="wallnote__list" onClick={(e) => e.stopPropagation()}>
+          {shown.map((b) => (
+            <li
+              key={b.spine}
+              className={`wallnote__item${hot === b.spine ? ' is-hot' : ''}${chosen === b.spine ? ' is-chosen' : ''}`}
+              onPointerEnter={() => setHot(b.spine)}
+              onPointerLeave={() => setHot(null)}
+              onClick={() => setChosen(chosen === b.spine ? null : b.spine)}
+            >
+              <span className="wallnote__title">{b.title}</span>
+              <span className="wallnote__author">{b.author}</span>
+              {status(b) && <span className="wallnote__status">{status(b)}</span>}
+              {chosen === b.spine && b.note && <span className="wallnote__note">{b.note}</span>}
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   );

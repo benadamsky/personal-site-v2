@@ -55,7 +55,7 @@ export const regions = {
   paper: { x: 70.6, y: 81, w: 14, h: 9 },
   paperFace: { x: 71.6, y: 82.2, w: 12, h: 7.2 },
   // wall beside the shelf, where a chosen book's note is written
-  wall: { x: 31, y: 21, w: 22, h: 17 }
+  wall: { x: 30.5, y: 5, w: 24, h: 33 }
 } satisfies Record<string, Rect>;
 
 export type Focus = 'monitor' | 'shelf' | 'paper';

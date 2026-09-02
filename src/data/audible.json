@@ -1,0 +1,6 @@
+[
+  { "asin": "placeholder-1", "title": "Placeholder title", "author": "Author", "status": "listening", "percent": 40, "added": "2026-08-01" },
+  { "asin": "placeholder-2", "title": "Placeholder title two", "author": "Author", "status": "finished", "finished": "Jul 2026", "added": "2026-07-01" },
+  { "asin": "placeholder-3", "title": "Placeholder title three", "author": "Author", "status": "finished", "finished": "May 2026", "added": "2026-05-01" },
+  { "asin": "placeholder-4", "title": "Placeholder title four", "author": "Author", "status": "shelf", "added": "2026-04-01" }
+]

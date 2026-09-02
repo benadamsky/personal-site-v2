@@ -14,6 +14,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   e.g. `FAL_KEY` for video generation. Never import it from app code or ship it.
 - Scene assets are generated with the Codex CLI image tool (`~/.local/bin/codex exec`),
   masters live outside the repo; `public/room.jpg` is the shipped still.
+- The shelf reads `src/data/audible.json`, written by `node scripts/audible-sync.mjs`
+  (unofficial audible-cli; Ben runs `audible quickstart` once himself, never an agent).
 - Hotspot geometry is in `src/components/room/scene.ts`, in percent of the image.
 - Splash video is a set of event clips in `public/clips/`, each starting and ending
   on the master still, chained at random by `ClipPlayer`. Generate new ones with

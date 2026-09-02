@@ -51,18 +51,19 @@ export const regions = {
   headphones: { x: 56.8, y: 58, w: 7.7, h: 22 },
   mouse: { x: 62, y: 81.5, w: 5.5, h: 7.5 },
   keyboard: { x: 55, y: 80.5, w: 3, h: 5.5 },
-  // the sheet of paper on the desk (bounding box), and its inner face
-  paper: { x: 70.6, y: 81, w: 14, h: 9 },
-  paperFace: { x: 71.6, y: 82.2, w: 12, h: 7.2 },
+  // cork pinboard on the wall, the sheet pinned to it, and the sheet's face
+  board: { x: 48.2, y: 8, w: 22, h: 24.5 },
+  paper: { x: 49.8, y: 10.8, w: 8, h: 18.5 },
+  paperFace: { x: 50.3, y: 11.6, w: 7.2, h: 17 },
   // wall beside the shelf, where a chosen book's note is written
-  wall: { x: 30.5, y: 5, w: 24, h: 33 }
+  wall: { x: 27, y: 5, w: 19.5, h: 33 }
 } satisfies Record<string, Rect>;
 
 export type Focus = 'monitor' | 'shelf' | 'paper';
 export const focusRect: Record<Focus, Rect> = {
   monitor: regions.monitor,
   shelf: { x: 0.5, y: 4, w: 24.5, h: 67 },
-  paper: { x: 68.5, y: 78.5, w: 18.5, h: 13.5 }
+  paper: { x: 48, y: 9, w: 11.5, h: 22 }
 };
 // how far the camera may push in on each object
 export const focusMaxScale: Record<Focus, number> = { monitor: 3.6, shelf: 3.6, paper: 5 };

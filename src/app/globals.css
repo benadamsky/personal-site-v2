@@ -318,54 +318,45 @@ body {
   border-bottom: 1px solid rgba(143, 188, 212, 0.4);
 }
 
-/* the sheet on the desk: text laid onto the painted paper, in its perspective */
-.onobject--paper {
-  transform: skewX(14deg) rotate(-1.2deg);
-  transform-origin: 0 0;
-}
+/* the sheet pinned to the board: portrait, flat on the wall */
 .paper {
   height: 100%;
   box-sizing: border-box;
-  padding: 3% 4%;
+  padding: 9% 8% 6%;
   color: #2d2118;
-  font-size: calc(var(--h, 260px) / 21);
+  font-size: calc(var(--h, 400px) / 34);
   line-height: 1.32;
   overflow: hidden;
 }
 .paper__head {
-  margin: 0 0 0.6em;
+  margin: 0 0 0.9em;
   font-weight: 500;
   font-variation-settings: 'SOFT' 100;
-  font-size: 1.1em;
+  font-size: 1.15em;
 }
 .paper__row {
-  margin: 0 0 0.45em;
-  display: grid;
-  grid-template-columns: 6.5em 6em 1fr;
-  gap: 0 0.8em;
+  margin: 0 0 0.7em;
 }
 .paper__co {
+  display: block;
   font-weight: 500;
 }
 .paper__yrs {
-  opacity: 0.6;
+  font-weight: 400;
+  opacity: 0.55;
+  font-size: 0.85em;
+  margin-left: 0.4em;
+}
+.paper__line {
+  display: block;
+  opacity: 0.9;
 }
 .paper__pdf {
-  float: right;
+  display: inline-block;
+  margin-top: 0.4em;
   font-size: 0.8em;
-  font-weight: 400;
   color: inherit;
-  opacity: 0.6;
-}
-
-@media (max-width: 720px) {
-  .paper__row {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-  .paper__yrs {
-    display: none;
-  }
+  opacity: 0.55;
 }
 
 /* chrome */

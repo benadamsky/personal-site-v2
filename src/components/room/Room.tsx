@@ -354,7 +354,7 @@ const Room = () => {
       )}
       {cam && focus === 'paper' && (
         <div
-          className={`onobject onobject--paper${settled ? ' is-on' : ''}`}
+          className={`onobject${settled ? ' is-on' : ''}`}
           style={{ ...onScreen(regions.paperFace, cam), '--h': `${(regions.paperFace.h / 100) * sh * cam.s}px` } as React.CSSProperties}
           onClick={(e) => e.stopPropagation()}
         >

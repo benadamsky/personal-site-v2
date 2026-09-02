@@ -31,7 +31,6 @@ jobs:
           echo "$TGZ" | base64 -d | tar -xz -C "$HOME/.audible"
       - name: Sync
         env:
-          AUDIBLE_BIN: ${{ github.workspace }}/../../.local/bin/audible
           AUDIBLE_AUTH_PASSWORD: ${{ secrets.AUDIBLE_AUTH_PASSWORD }}
         run: |
           export AUDIBLE_BIN="$(command -v audible)"

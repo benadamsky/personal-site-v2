@@ -18,3 +18,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Splash video is a set of event clips in `public/clips/`, each starting and ending
   on the master still, chained at random by `ClipPlayer`. Generate new ones with
   `node scripts/room-clips.mjs <master.png> <work-dir> [clipId ...]` (fal.ai, Seedance 1.5 Pro).
+  Every clip dissolves from/to a shared rest frame (`hero/rest.png`, outside the repo) that
+  is a frame from the idle clip body, gain-matched to the body mean. If the master changes,
+  regenerate all clips, then re-derive rest.png from the new idle clip before pass 2.
+  See `scripts/clip-normalize.sh` for why (Seedance tone ramp).

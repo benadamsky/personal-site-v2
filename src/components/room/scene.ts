@@ -24,13 +24,14 @@ export const media = {
   clips: [
     { src: '/clips/idle.mp4', weight: 5 },
     { src: '/clips/work.mp4', weight: 4 },
-    { src: '/clips/cat-twitch.mp4', weight: 1 },
     { src: '/clips/lean.mp4', weight: 1 }
   ] as Clip[]
 };
 export const hasVideo = media.clips.length > 0;
 
-// Petting Cleo: dissolve into this clip and purr.
+// Petting Cleo: dissolve into this clip and purr. It is not in the random
+// rotation: she lifts her head and looks back, which reads as a response to
+// being touched, not as something a sleeping cat does on her own.
 export const cat = {
   name: 'Cleo',
   reaction: '/clips/cat-twitch.mp4',

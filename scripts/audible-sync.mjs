@@ -3,7 +3,8 @@
 // this himself, it asks for the Amazon login):
 //   uv tool install audible-cli
 //   audible quickstart
-// Then, whenever the shelf should refresh:
+// Then, whenever the shelf should refresh (CI does this daily, see
+// .github/workflows/audible-sync.yml):
 //   node scripts/audible-sync.mjs
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdtempSync } from 'node:fs';
@@ -11,9 +12,11 @@ import { tmpdir, homedir } from 'node:os';
 import path from 'node:path';
 
 const bin = process.env.AUDIBLE_BIN || path.join(homedir(), '.local/bin/audible');
+// Password for an encrypted auth file (CI); omit locally if the file is plain.
+const pw = process.env.AUDIBLE_AUTH_PASSWORD ? ['-p', process.env.AUDIBLE_AUTH_PASSWORD] : [];
 const dir = mkdtempSync(path.join(tmpdir(), 'audible-'));
 const raw = path.join(dir, 'library.json');
-execFileSync(bin, ['library', 'export', '-f', 'json', '-o', raw], { stdio: 'inherit' });
+execFileSync(bin, [...pw, 'library', 'export', '-f', 'json', '-o', raw], { stdio: 'inherit' });
 
 const month = (iso) =>
   iso && iso !== '-'

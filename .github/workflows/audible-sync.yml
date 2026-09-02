@@ -1,0 +1,48 @@
+# Refreshes the shelf from Audible once a day and commits the result.
+# Vercel picks up the commit and redeploys. Nothing here runs at request time.
+#
+# Secrets (Settings > Secrets and variables > Actions):
+#   AUDIBLE_CONFIG_TGZ_B64  base64 of a tarball of ~/.audible (config.toml + the
+#                           password-protected auth file) made on Ben's machine
+#   AUDIBLE_AUTH_PASSWORD   the password that encrypts that auth file
+name: audible-sync
+on:
+  schedule:
+    - cron: '17 9 * * *' # 09:17 UTC daily
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: audible-sync
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: astral-sh/setup-uv@v5
+      - run: uv tool install audible-cli==0.6.0
+      - name: Restore Audible config
+        env:
+          TGZ: ${{ secrets.AUDIBLE_CONFIG_TGZ_B64 }}
+        run: |
+          mkdir -p "$HOME/.audible"
+          echo "$TGZ" | base64 -d | tar -xz -C "$HOME/.audible"
+      - name: Sync
+        env:
+          AUDIBLE_BIN: ${{ github.workspace }}/../../.local/bin/audible
+          AUDIBLE_AUTH_PASSWORD: ${{ secrets.AUDIBLE_AUTH_PASSWORD }}
+        run: |
+          export AUDIBLE_BIN="$(command -v audible)"
+          node scripts/audible-sync.mjs
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- src/data/audible.json; then
+            echo "shelf unchanged"; exit 0
+          fi
+          git config user.name "shelf bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add src/data/audible.json
+          git commit -m "Shelf: sync from Audible"
+          git push

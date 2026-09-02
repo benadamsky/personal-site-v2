@@ -1,6 +1,8 @@
 // Generate the room's event clips via fal.ai. Every clip starts AND ends on the
 // master still, so the player can chain them in any order with no visible cut.
 // Usage: node scripts/room-clips.mjs <still.png> <work-dir> [clipId ...]
+// REST_FRAME env (default hero/rest.png next to the still) is the shared rest
+// frame clips dissolve from/to; it must come from a clip body, not the still.
 // Reads FAL_KEY from .env.agents (gitignored). Never log the key.
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { execSync } from 'node:child_process';
@@ -109,7 +111,8 @@ const generate = async (id) => {
   // Normalize: 48fps, and dissolve from/to the shared master frame at both
   // ends so every clip starts and ends on identical pixels.
   const out = path.join(publicDir, `${id}.mp4`);
-  execSync(`sh scripts/clip-normalize.sh "${still}" "${raw}" "${out}"`);
+  const rest = process.env.REST_FRAME || path.join(path.dirname(still), 'rest.png');
+  execSync(`sh scripts/clip-normalize.sh "${rest}" "${raw}" "${out}"`);
   console.log(`${id}: saved ${out}`);
 };
 

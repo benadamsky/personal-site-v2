@@ -18,7 +18,8 @@ interface ClipPlayerProps {
 const FADE_MS = 80;
 
 const pick = (clips: Clip[], avoid: string[]) => {
-  const pool = clips.filter((c) => !avoid.includes(c.src));
+  // avoid entries may be full URLs or bare filenames
+  const pool = clips.filter((c) => !avoid.some((a) => a && c.src.endsWith(a.split('/').pop() ?? a)));
   const list = pool.length ? pool : clips;
   const total = list.reduce((n, c) => n + c.weight, 0);
   let r = Math.random() * total;

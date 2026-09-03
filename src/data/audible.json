@@ -1,6 +1,265 @@
 [
-  { "asin": "placeholder-1", "title": "Placeholder title", "author": "Author", "status": "listening", "percent": 40, "added": "2026-08-01" },
-  { "asin": "placeholder-2", "title": "Placeholder title two", "author": "Author", "status": "finished", "finished": "Jul 2026", "added": "2026-07-01" },
-  { "asin": "placeholder-3", "title": "Placeholder title three", "author": "Author", "status": "finished", "finished": "May 2026", "added": "2026-05-01" },
-  { "asin": "placeholder-4", "title": "Placeholder title four", "author": "Author", "status": "shelf", "added": "2026-04-01" }
+  {
+    "asin": "B09GDDCLMF",
+    "title": "ADHD & Us",
+    "author": "Anita Robertson LCSW",
+    "status": "listening",
+    "percent": 50,
+    "added": "2026-01-04T04:18:35.543Z"
+  },
+  {
+    "asin": "B0BS9XXKHX",
+    "title": "Scattered Minds",
+    "author": "Gabor Maté MD",
+    "status": "listening",
+    "percent": 53,
+    "added": "2025-09-24T06:28:19.377Z"
+  },
+  {
+    "asin": "B01D3AC5BA",
+    "title": "Grit",
+    "author": "Angela Duckworth",
+    "status": "listening",
+    "percent": 29,
+    "added": "2025-07-13T20:27:29.781Z"
+  },
+  {
+    "asin": "B07BLZDZFQ",
+    "title": "Accelerate: Building and Scaling High Performing Technology Organizations",
+    "author": "Nicole Forsgren PhD",
+    "status": "listening",
+    "percent": 19,
+    "added": "2025-02-24T07:00:26.527Z"
+  },
+  {
+    "asin": "B0DZ7BSHHR",
+    "title": "The New Emotional Intelligence",
+    "author": "Travis Bradberry",
+    "status": "shelf",
+    "added": "2026-08-23T05:00:19.676Z"
+  },
+  {
+    "asin": "B00K33KA7M",
+    "title": "Capital in the Twenty-First Century",
+    "author": "Thomas Piketty",
+    "status": "shelf",
+    "added": "2026-06-27T16:05:57.723Z"
+  },
+  {
+    "asin": "B0CYNPSBNG",
+    "title": "Man's Search for Meaning",
+    "author": "Viktor E. Frankl",
+    "status": "shelf",
+    "added": "2025-11-14T09:03:16.569Z"
+  },
+  {
+    "asin": "B0CY7DMZ8J",
+    "title": "The Innovator's Dilemma, with a New Foreword",
+    "author": "Clayton M. Christensen",
+    "status": "shelf",
+    "added": "2025-10-21T02:19:03.911Z"
+  },
+  {
+    "asin": "B0DVH68VCL",
+    "title": "When Everyone Knows That Everyone Knows . . .",
+    "author": "Steven Pinker",
+    "status": "shelf",
+    "added": "2025-09-23T07:06:56.867Z"
+  },
+  {
+    "asin": "1250770025",
+    "title": "The Tyranny of Merit",
+    "author": "Michael J. Sandel",
+    "status": "shelf",
+    "added": "2025-08-03T14:27:39.919Z"
+  },
+  {
+    "asin": "B06W9LYZXS",
+    "title": "On Tyranny",
+    "author": "Timothy Snyder",
+    "status": "shelf",
+    "added": "2025-08-03T14:27:12.827Z"
+  },
+  {
+    "asin": "B09FYH79YW",
+    "title": "Stolen Focus",
+    "author": "Johann Hari",
+    "status": "shelf",
+    "added": "2025-08-03T14:25:55.410Z"
+  },
+  {
+    "asin": "B07PQ9GLDV",
+    "title": "The War of Art",
+    "author": "Steven Pressfield",
+    "status": "shelf",
+    "added": "2025-07-08T06:01:35.625Z"
+  },
+  {
+    "asin": "B0C6YL9M27",
+    "title": "The Algebra of Wealth",
+    "author": "Scott Galloway",
+    "status": "shelf",
+    "added": "2025-06-25T06:38:29.949Z"
+  },
+  {
+    "asin": "0062839276",
+    "title": "Trillion Dollar Coach",
+    "author": "Eric Schmidt",
+    "status": "shelf",
+    "added": "2025-06-25T06:33:58.188Z"
+  },
+  {
+    "asin": "B0DJC12RZ3",
+    "title": "7 Powers",
+    "author": "Hamilton Helmer",
+    "status": "shelf",
+    "added": "2025-05-30T13:48:37.403Z"
+  },
+  {
+    "asin": "B01CF5O89G",
+    "title": "Never Split the Difference",
+    "author": "Chris Voss",
+    "status": "shelf",
+    "added": "2025-05-30T13:47:52.687Z"
+  },
+  {
+    "asin": "0593459326",
+    "title": "High Output Management",
+    "author": "Andrew S. Grove",
+    "status": "shelf",
+    "added": "2025-05-30T13:46:45.128Z"
+  },
+  {
+    "asin": "1980029172",
+    "title": "The Rebel",
+    "author": "Albert Camus",
+    "status": "shelf",
+    "added": "2025-04-05T20:38:22.326Z"
+  },
+  {
+    "asin": "B0B6Y2VTFH",
+    "title": "Running Lean (3rd Edition)",
+    "author": "Ash Maurya",
+    "status": "shelf",
+    "added": "2025-02-23T18:05:09.291Z"
+  },
+  {
+    "asin": "B07FSQ89K5",
+    "title": "High Growth Handbook",
+    "author": "Elad Gil",
+    "status": "shelf",
+    "added": "2025-02-23T18:03:48.265Z"
+  },
+  {
+    "asin": "B00O7ZE81Q",
+    "title": "How Adam Smith Can Change Your Life",
+    "author": "Russ Roberts",
+    "status": "shelf",
+    "added": "2025-01-19T16:50:28.264Z"
+  },
+  {
+    "asin": "1797103385",
+    "title": "The Sovereign Individual",
+    "author": "James Dale Davidson",
+    "status": "shelf",
+    "added": "2025-01-19T16:47:57.190Z"
+  },
+  {
+    "asin": "B0CZ59BB9B",
+    "title": "Building a StoryBrand 2.0",
+    "author": "Donald Miller",
+    "status": "shelf",
+    "added": "2025-01-10T20:54:12.430Z"
+  },
+  {
+    "asin": "1508296057",
+    "title": "Lifespan",
+    "author": "David Sinclair",
+    "status": "shelf",
+    "added": "2024-11-12T01:13:45.856Z"
+  },
+  {
+    "asin": "B07BDQ1Y6J",
+    "title": "Inspired",
+    "author": "Marty Cagan",
+    "status": "shelf",
+    "added": "2024-09-23T05:32:34.463Z"
+  },
+  {
+    "asin": "B09Q9WQ1QJ",
+    "title": "How to Keep House While Drowning",
+    "author": "KC Davis LPC",
+    "status": "shelf",
+    "added": "2024-09-01T15:51:55.940Z"
+  },
+  {
+    "asin": "0593162927",
+    "title": "Good Strategy/Bad Strategy",
+    "author": "Richard Rumelt",
+    "status": "shelf",
+    "added": "2024-08-07T17:42:42.858Z"
+  },
+  {
+    "asin": "0008354669",
+    "title": "The Status Game",
+    "author": "Will Storr",
+    "status": "shelf",
+    "added": "2024-05-12T07:38:26.526Z"
+  },
+  {
+    "asin": "B00LPMD72K",
+    "title": "Superintelligence",
+    "author": "Nick Bostrom",
+    "status": "shelf",
+    "added": "2024-04-29T17:11:07.147Z"
+  },
+  {
+    "asin": "B09L55NZ82",
+    "title": "The DevOps Handbook, Second Edition",
+    "author": "Gene Kim",
+    "status": "shelf",
+    "added": "2024-03-11T17:00:38.385Z"
+  },
+  {
+    "asin": "B0C6YK7T4F",
+    "title": "The Everything Token",
+    "author": "Steve Kaczynski",
+    "status": "shelf",
+    "added": "2024-02-27T16:06:25.441Z"
+  },
+  {
+    "asin": "B0C91Y6H32",
+    "title": "Read Write Own",
+    "author": "Chris Dixon",
+    "status": "shelf",
+    "added": "2024-02-03T00:56:37.009Z"
+  },
+  {
+    "asin": "B07SFKFDQW",
+    "title": "An Elegant Puzzle: Systems of Engineering Management",
+    "author": "Will Larson",
+    "status": "shelf",
+    "added": "2024-01-04T22:20:05.607Z"
+  },
+  {
+    "asin": "B07FWBN4Q5",
+    "title": "Thinking in Systems",
+    "author": "Donella H. Meadows",
+    "status": "shelf",
+    "added": "2023-12-10T21:53:53.267Z"
+  },
+  {
+    "asin": "B09WDR3P3V",
+    "title": "Peopleware",
+    "author": "DeMarco Tom",
+    "status": "shelf",
+    "added": "2023-11-03T18:30:30.995Z"
+  },
+  {
+    "asin": "B01705KJRQ",
+    "title": "Traction",
+    "author": "Gabriel Weinberg",
+    "status": "shelf",
+    "added": "2023-11-02T20:09:47.584Z"
+  }
 ]

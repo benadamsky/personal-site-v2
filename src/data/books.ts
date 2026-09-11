@@ -12,6 +12,16 @@ export interface Book {
   note?: string;
 }
 
+export interface AudibleBook {
+  asin: string;
+  title: string;
+  author: string;
+  status: 'listening' | 'finished' | 'shelf';
+  percent?: number;
+  finished?: string;
+  added: string;
+}
+
 // Books that are not on Audible (paper, Kindle, whatever). TODO(ben): fill in.
 const manual: Omit<Book, 'spine'>[] = [];
 
@@ -33,18 +43,11 @@ const fromAudible: Omit<Book, 'spine'>[] = (audible as AudibleBook[]).map((a) =>
   finished: a.finished
 }));
 
-export interface AudibleBook {
-  asin: string;
-  title: string;
-  author: string;
-  status: 'listening' | 'finished' | 'shelf';
-  percent?: number;
-  finished?: string;
-  added: string;
-}
-
-export const books: Book[] = [...fromAudible, ...manual].slice(0, slots.length).map((b, i) => ({
+/** Everything, in shelf order. The plain page lists all of it. */
+export const library: Omit<Book, 'spine'>[] = [...fromAudible, ...manual].map((b) => ({
   ...b,
-  spine: slots[i],
   note: b.note ?? notes[b.title]
 }));
+
+/** The ones that get a spine in the room. */
+export const books: Book[] = library.slice(0, slots.length).map((b, i) => ({ ...b, spine: slots[i] }));

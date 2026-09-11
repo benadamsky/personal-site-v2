@@ -1,19 +1,22 @@
 import './globals.css';
-import { Fraunces } from 'next/font/google';
+import type { Metadata } from 'next';
+import { me } from '@/data/me';
 
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  axes: ['opsz', 'SOFT'],
-  variable: '--font-serif'
-});
-
-export const metadata = {
-  title: 'Ben Adamsky',
-  description: 'A room, a desk, a cat, some books, and the work.'
+export const metadata: Metadata = {
+  metadataBase: new URL(me.site),
+  title: { default: me.name, template: `%s · ${me.name}` },
+  description: me.description,
+  openGraph: {
+    type: 'website',
+    siteName: me.name,
+    title: me.name,
+    description: me.description
+  },
+  twitter: { card: 'summary_large_image' }
 };
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => (
-  <html lang="en" className={fraunces.variable}>
+  <html lang="en">
     <body>{children}</body>
   </html>
 );

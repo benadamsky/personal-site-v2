@@ -17,6 +17,15 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - The shelf reads `src/data/audible.json`, written by `node scripts/audible-sync.mjs`
   (unofficial audible-cli; Ben runs `audible quickstart` once himself, never an agent).
 - Hotspot geometry is in `src/components/room/scene.ts`, in percent of the image.
+- `/plain` is the whole site as a document with no scripts or fonts; it is the
+  crawler, no-JS, and print path. `scripts/resume-pdf.sh` prints `public/resume.pdf`
+  from it, so keep the `@media print` rules in `src/app/plain/page.tsx` honest.
+- On phones and portrait tablets (`small` in `Room.tsx`) content opens in a bottom
+  sheet and the camera frames the object above it. Desktop content sits on the object.
+- Sound goes through Web Audio gain nodes (`room/audio.ts`); iOS ignores
+  `HTMLMediaElement.volume`. Ambient rain is off until the visitor toggles it.
+- Video never mounts before the first measure, so reduced-motion and data-saver
+  checks are real before a clip is requested.
 - Splash video is a set of event clips in `public/clips/`, each starting and ending
   on the master still, chained at random by `ClipPlayer`. Generate new ones with
   `node scripts/room-clips.mjs <master.png> <work-dir> [clipId ...]` (fal.ai, Seedance 1.5 Pro).

@@ -1,15 +1,18 @@
 import './globals.css';
-import { Fraunces } from 'next/font/google';
+import localFont from 'next/font/local';
 
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  axes: ['opsz', 'SOFT'],
+const fraunces = localFont({
+  src: './fonts/fraunces-latin.woff2',
+  weight: '100 900',
+  display: 'swap',
   variable: '--font-serif'
 });
 
 export const metadata = {
+  metadataBase: new URL('https://www.benadamsky.com'),
   title: 'Ben Adamsky',
-  description: 'A room, a desk, a cat, some books, and the work.'
+  description:
+    'I build software and companies. Currently getting people jobs at Dreamwork. Previously Ponder.'
 };
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => (

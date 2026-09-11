@@ -6,19 +6,40 @@ export interface Job {
   url?: string;
 }
 
-// Now: what is on the monitor.
-export const now = {
-  company: 'Ponder',
-  project: 'Dreamwork',
-  url: 'https://dreamwork.ai',
-  // TODO(ben): rewrite in your voice.
-  lines: [
-    'Dreamwork is an agent-first job search platform. Co-founder and CTO since December 2023.',
-    'Most days are spent on the agent runtime, the matching pipeline, and the parts of the product that make a job hunt feel less like a second job.'
-  ]
-};
+export const projects = [
+  {
+    id: 'dreamwork',
+    name: 'dreamwork',
+    phase: 'building now',
+    role: 'co-founder & cto',
+    url: 'https://www.dreamworkhq.com',
+    lines: [
+      'currently getting people jobs.',
+      'i build the systems that find good roles and match them to the right people. less time job hunting, more time on whatever comes next.'
+    ],
+    links: [
+      { label: 'the hiring index', url: 'https://www.dreamworkhq.com/research' }
+    ]
+  },
+  {
+    id: 'ponder',
+    name: 'ponder',
+    phase: 'previously',
+    role: 'co-founder & cto',
+    url: 'https://ponder.social',
+    lines: [
+      'surveys and social prediction games on farcaster. a product built around figuring out what everyone else thinks.',
+      // Lifetime audience supplied by Ben; the payout is the narrower game-era
+      // figure in Colin's December 2025 public retrospective. Keep them distinct.
+      'we reached hundreds of thousands of people across ponder. the prediction game alone paid out more than $500,000 between players.'
+    ],
+    links: [
+      { label: 'a look back', url: 'https://farcaster.xyz/cojo.eth/0x1955533a' }
+    ]
+  }
+] as const;
 
-// Then: the sheet in the desk drawer. One sentence each, oldest last.
+// Earlier roles. Shared by the pinboard and the plain HTML page.
 export const history: Job[] = [
   {
     company: 'Freeport',

@@ -1,23 +1,47 @@
-import { now } from '@/data/work';
+'use client';
+import { useState } from 'react';
+import { projects } from '@/data/work';
 
-// What is on the monitor right now. Rendered over the visible part of the
-// screen (to the right of his head) once the camera has pushed in.
-const Screen = () => (
-  <div className="screen">
-    <div className="screen__bar">
-      <span className="screen__tab is-on">{now.project.toLowerCase()}</span>
-      <span className="screen__tab">{now.company.toLowerCase()}</span>
+export default function Screen() {
+  const [selected, setSelected] = useState(0);
+  const project = projects[selected];
+  return (
+    <div className="screen">
+      <div className="screen__bar" role="group" aria-label="Projects">
+        {projects.map((p, i) => (
+          <button
+            key={p.id}
+            className={`screen__tab${selected === i ? ' is-on' : ''}`}
+            aria-pressed={selected === i}
+            onClick={() => setSelected(i)}
+          >
+            {p.name}
+          </button>
+        ))}
+      </div>
+      <div className="screen__body">
+        <h2 id="room-panel-title" className="screen__title">
+          {project.name}
+        </h2>
+        <p className="screen__meta">
+          {project.role} · {project.phase}
+        </p>
+        {project.lines.map((line) => (
+          <p key={line}>{line}</p>
+        ))}
+        <p>
+          <a href={project.url} target="_blank" rel="noopener noreferrer">
+            visit {project.name}
+          </a>
+        </p>
+        {project.links.map((l) => (
+          <p key={l.url}>
+            <a href={l.url} target="_blank" rel="noopener noreferrer">
+              {l.label}
+            </a>
+          </p>
+        ))}
+      </div>
     </div>
-    <div className="screen__body">
-      <p className="screen__title">{now.project}</p>
-      {now.lines.map((l) => (
-        <p key={l}>{l}</p>
-      ))}
-      <a href={now.url} target="_blank" rel="noopener noreferrer">
-        {now.url.replace('https://', '')}
-      </a>
-    </div>
-  </div>
-);
-
-export default Screen;
+  );
+}

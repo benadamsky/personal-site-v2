@@ -7,11 +7,12 @@
   "author": "benadamsky <benadamsky@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "next dev",
+    "dev": "node scripts/dev.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint src",
-    "prettier": "prettier --config .prettierrc '*/**/*.{js,ts,tsx}' --write"
+    "prettier": "prettier --config .prettierrc '*/**/*.{js,ts,tsx}' --write",
+    "test:motion": "node scripts/clip-player.test.cjs"
   },
   "dependencies": {
     "@types/node": "26.1.2",

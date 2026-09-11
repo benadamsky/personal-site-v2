@@ -4,11 +4,11 @@ import audible from './audible.json';
 // without a book are just books.
 export interface Book {
   spine: number;
+  asin?: string;
   title: string;
   author: string;
   status?: 'listening' | 'finished' | 'shelf';
   percent?: number;
-  finished?: string; // e.g. "Mar 2026"
   note?: string;
 }
 
@@ -25,13 +25,15 @@ const notes: Record<string, string> = {
   // 'Exact Title': 'One sentence on why it mattered.'
 };
 
-const fromAudible: Omit<Book, 'spine'>[] = (audible as AudibleBook[]).map((a) => ({
-  title: a.title,
-  author: a.author,
-  status: a.status,
-  percent: a.percent,
-  finished: a.finished
-}));
+const fromAudible: Omit<Book, 'spine'>[] = (audible as AudibleBook[]).map(
+  (a) => ({
+    asin: a.asin,
+    title: a.title,
+    author: a.author,
+    status: a.status,
+    percent: a.percent
+  })
+);
 
 export interface AudibleBook {
   asin: string;
@@ -39,12 +41,28 @@ export interface AudibleBook {
   author: string;
   status: 'listening' | 'finished' | 'shelf';
   percent?: number;
-  finished?: string;
   added: string;
 }
 
-export const books: Book[] = [...fromAudible, ...manual].slice(0, slots.length).map((b, i) => ({
-  ...b,
-  spine: slots[i],
-  note: b.note ?? notes[b.title]
-}));
+export const reading: Omit<Book, 'spine'>[] = [...fromAudible, ...manual].map(
+  (b) => ({
+    ...b,
+    note: b.note ?? notes[b.title]
+  })
+);
+
+export const books: Book[] = reading
+  .slice(0, slots.length)
+  .map((b, i) => ({ ...b, spine: slots[i] }));
+
+export const bookStatus = (b: Pick<Book, 'status' | 'percent'>) =>
+  b.status === 'listening'
+    ? `in progress${b.percent ? ` · ${b.percent}%` : ''}`
+    : b.status === 'finished'
+      ? 'finished'
+      : 'on the shelf';
+
+export const bookUrl = (b: Pick<Book, 'asin'>) =>
+  b.asin
+    ? `https://www.audible.com/pd/${encodeURIComponent(b.asin)}`
+    : undefined;

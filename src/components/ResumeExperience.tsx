@@ -1,5 +1,6 @@
 import { FC, ReactNode } from 'react';
 import { DateRange, DateRangeProps } from './DateRange';
+import { projects } from '@/data/work';
 
 interface ExperienceItemProps {
   role: string;
@@ -43,14 +44,6 @@ const ExperienceList: FC<ExperienceListProps> = ({ items }) => (
 );
 
 const experiences = [
-  {
-    role: 'Co-Founder, CTO',
-    company: 'Ponder',
-    description: 'A web3 social survey platform',
-    start: 'Dec 2023',
-    end: 'Present',
-    items: []
-  },
   {
     role: 'Software Engineer',
     company: 'Freeport',
@@ -128,6 +121,22 @@ const ResumeExperience: FC = () => (
   <div>
     <h2 className="text-4xl font-semibold mb-3">Experience</h2>
     <div className="space-y-8">
+      {projects.map((project) => (
+        <section key={project.id}>
+          <h3 className="text-2xl font-semibold mb-1">
+            {project.name} — {project.role}
+          </h3>
+          <p className="mb-3 text-stone-300">{project.phase}</p>
+          {project.lines.map((line) => (
+            <p className="mb-3" key={line}>
+              {line}
+            </p>
+          ))}
+          <a href={project.url} className="underline underline-offset-4">
+            visit {project.name}
+          </a>
+        </section>
+      ))}
       {experiences.map(({ role, company, description, start, end, items }) => (
         <ExperienceItem
           key={role + company}

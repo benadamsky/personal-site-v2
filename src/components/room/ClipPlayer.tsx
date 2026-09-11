@@ -3,178 +3,281 @@ import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
 export interface Clip {
   src: string;
-  /** Relative odds of being picked next. Big events should be rare. */
   weight: number;
 }
-
-interface ClipPlayerProps {
+export interface ClipPlayerHandle {
+  playNow: (src: string) => void;
+}
+interface Props {
   clips: Clip[];
   poster: string;
   className?: string;
+  paused?: boolean;
 }
 
-export interface ClipPlayerHandle {
-  /** Interrupt the current clip and dissolve into this one (user-triggered). */
-  playNow: (src: string) => void;
+function pick(clips: Clip[], failed: Set<string>) {
+  const choices = clips.filter((c) => c.weight > 0 && !failed.has(c.src));
+  let n = Math.random() * choices.reduce((sum, c) => sum + c.weight, 0);
+  return choices.find((c) => (n -= c.weight) <= 0)?.src ?? choices.at(-1)?.src;
 }
 
-// Clips share identical head/tail frames (see scripts/clip-normalize.sh), so
-// this only papers over decode timing; it is not a visual crossfade.
-const FADE_MS = 80;
+function ready(video: HTMLVideoElement, signal: AbortSignal) {
+  return new Promise<void>((resolve, reject) => {
+    const done = (error?: Error) => {
+      clearTimeout(timer);
+      video.removeEventListener('canplay', loaded);
+      video.removeEventListener('error', failed);
+      signal.removeEventListener('abort', aborted);
+      if (error) reject(error);
+      else resolve();
+    };
+    const loaded = () => done();
+    const failed = () => done(new Error('Media could not be decoded'));
+    const aborted = () => done(new Error('Media wait cancelled'));
+    const timer = setTimeout(
+      () => done(new Error('Media load timed out')),
+      12000
+    );
+    video.addEventListener('canplay', loaded);
+    video.addEventListener('error', failed);
+    signal.addEventListener('abort', aborted, { once: true });
+    if (signal.aborted) aborted();
+    else if (video.error) failed();
+    else if (video.readyState >= 3) loaded();
+  });
+}
 
-const pick = (clips: Clip[], avoid: string[]) => {
-  // avoid entries may be full URLs or bare filenames
-  const pool = clips.filter((c) => !avoid.some((a) => a && c.src.endsWith(a.split('/').pop() ?? a)));
-  const list = pool.length ? pool : clips;
-  const total = list.reduce((n, c) => n + c.weight, 0);
-  let r = Math.random() * total;
-  for (const c of list) {
-    r -= c.weight;
-    if (r <= 0) return c.src;
-  }
-  return list[list.length - 1].src;
-};
+// A decoded frame must exist before the incoming video is exposed. Waiting for
+// play() alone is insufficient on a slow decoder.
+function firstFrame(video: HTMLVideoElement, signal: AbortSignal) {
+  return new Promise<void>((resolve, reject) => {
+    let frame = 0;
+    const finish = (error?: Error) => {
+      clearTimeout(timer);
+      if (frame && video.cancelVideoFrameCallback)
+        video.cancelVideoFrameCallback(frame);
+      signal.removeEventListener('abort', abort);
+      if (error) reject(error);
+      else resolve();
+    };
+    const abort = () => finish(new Error('Frame wait cancelled'));
+    const timer = setTimeout(
+      () => (video.readyState >= 2 ? finish() : finish(new Error('No frame'))),
+      1500
+    );
+    signal.addEventListener('abort', abort, { once: true });
+    if (signal.aborted) abort();
+    else if (video.requestVideoFrameCallback)
+      frame = video.requestVideoFrameCallback(() => finish());
+    else requestAnimationFrame(() => requestAnimationFrame(() => finish()));
+  });
+}
 
-const ready = (v: HTMLVideoElement) =>
-  v.readyState >= 3
-    ? Promise.resolve()
-    : new Promise<void>((res) => {
-        const done = () => {
-          v.removeEventListener('canplay', done);
-          v.removeEventListener('error', done);
-          res();
-        };
-        v.addEventListener('canplay', done);
-        v.addEventListener('error', done);
-      });
-
-// Two stacked <video>s. Every clip starts and ends on the same rest frame, so
-// when one ends we start the other and fade it over in a few frames. Adding an
-// event to the room is just adding a clip to the list.
-const ClipPlayer = forwardRef<ClipPlayerHandle, ClipPlayerProps>(function ClipPlayer(
-  { clips, poster, className },
+const ClipPlayer = forwardRef<ClipPlayerHandle, Props>(function ClipPlayer(
+  { clips, poster, className, paused = false },
   ref
 ) {
   const a = useRef<HTMLVideoElement>(null);
   const b = useRef<HTMLVideoElement>(null);
-  const api = useRef<ClipPlayerHandle>({ playNow: () => {} });
-  useImperativeHandle(ref, () => ({ playNow: (src) => api.current.playNow(src) }), []);
+  const pausedRef = useRef(paused);
+  const api = useRef({ playNow: (_src: string) => {}, syncPause: () => {} });
+  useImperativeHandle(
+    ref,
+    () => ({ playNow: (src) => api.current.playNow(src) }),
+    []
+  );
 
   useEffect(() => {
-    const vids = [a.current, b.current];
-    if (!vids[0] || !vids[1] || clips.length === 0) return;
+    pausedRef.current = paused;
+    api.current.syncPause();
+  }, [paused]);
+
+  useEffect(() => {
+    if (!a.current || !b.current || !clips.length) return;
+    const videos = [a.current, b.current];
+    const controller = new AbortController();
+    const { signal } = controller;
+    const failed = new Set<string>();
+    const sources = ['', ''];
     let active = 0;
-    let alive = true;
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    const handle = api.current;
-
-    const name = (v: HTMLVideoElement) => v.src.split('/').pop() ?? '';
-    const load = (v: HTMLVideoElement, src: string) => {
-      v.src = src;
-      v.load();
+    let shown = false;
+    let busy = false;
+    let incomingIndex = 0;
+    let pending: string | undefined;
+    let timer: ReturnType<typeof setTimeout>;
+    let generation = 0;
+    const isPaused = () => pausedRef.current || document.hidden;
+    const load = (i: number, src: string) => {
+      sources[i] = src;
+      videos[i].src = src;
+      videos[i].load();
     };
-    const show = (i: number) => {
-      vids[i]!.style.opacity = '1';
-      vids[1 - i]!.style.opacity = '0';
+    const prepare = () => {
+      const src = pick(clips, failed);
+      if (src) load(1 - active, src);
     };
 
-    const first = pick(clips, []);
-    load(vids[0], first);
-    load(vids[1], pick(clips, [first]));
-    show(0);
-    vids[0].play().catch(() => {
-      /* autoplay blocked: poster stays */
-    });
-
-    const onEnded = async () => {
-      if (!alive) return;
-      const cur = vids[active]!;
-      const nxt = vids[1 - active]!;
-      await ready(nxt);
-      if (!alive) return;
-      try {
-        await nxt.play();
-      } catch {
-        cur.currentTime = 0;
-        cur.play().catch(() => {});
+    const advance = async (requested?: string) => {
+      if (signal.aborted) return;
+      if (busy || isPaused()) {
+        if (requested) pending = requested;
         return;
       }
-      active = 1 - active;
-      show(active);
-      // Only touch the finished video once it is fully faded out, otherwise
-      // resetting its src blanks it mid-fade and the room flashes.
-      timer = setTimeout(() => {
-        if (alive) load(cur, pick(clips, [name(cur), name(nxt)]));
-      }, FADE_MS + 60);
+      busy = true;
+      const token = ++generation;
+      const from = active;
+      const to = shown ? 1 - from : from;
+      incomingIndex = to;
+      const incoming = videos[to];
+      const outgoing = videos[from];
+      let src: string | undefined =
+        requested ?? sources[to] ?? pick(clips, failed);
+      if (!src || failed.has(src)) src = pick(clips, failed);
+      if (!src) {
+        busy = false;
+        return;
+      }
+      if (requested && shown) outgoing.pause();
+      if (sources[to] !== src) load(to, src);
+      const valid = () => !signal.aborted && token === generation;
+      try {
+        await ready(incoming, signal);
+        if (!valid()) return;
+        if (isPaused()) {
+          if (requested) pending = requested;
+          busy = false;
+          return;
+        }
+        incoming.currentTime = 0;
+        await incoming.play();
+        await firstFrame(incoming, signal);
+        if (!valid()) return;
+        if (isPaused()) {
+          incoming.pause();
+          if (requested) pending = requested;
+          busy = false;
+          return;
+        }
+        const duration = !shown ? 500 : requested ? 450 : 160;
+        // Only incoming opacity changes. The outgoing frame is an opaque floor.
+        incoming.style.transition = `opacity ${duration}ms ease`;
+        incoming.style.zIndex = '2';
+        incoming.style.opacity = '1';
+        active = to;
+        shown = true;
+        timer = setTimeout(() => {
+          if (!valid()) return;
+          if (from !== to) {
+            outgoing.pause();
+            outgoing.style.transition = 'none';
+            outgoing.style.opacity = '0';
+            outgoing.style.zIndex = '0';
+          }
+          incoming.style.zIndex = '1';
+          busy = false;
+          prepare();
+          if (pending) {
+            const next = pending;
+            pending = undefined;
+            void advance(next);
+          }
+          syncPause();
+        }, duration + 40);
+      } catch (error) {
+        if (!valid()) return;
+        incoming.pause();
+        busy = false;
+        // pause() may abort a pending play(). It does not make the file bad.
+        if (
+          isPaused() ||
+          (error instanceof DOMException && error.name === 'AbortError')
+        ) {
+          if (requested) pending = requested;
+          if (!isPaused()) syncPause();
+          return;
+        }
+        // Autoplay restrictions are a stable poster fallback, not a retry loop.
+        if (error instanceof DOMException && error.name === 'NotAllowedError')
+          return;
+        failed.add(src);
+        const replacement = pick(clips, failed);
+        if (replacement) {
+          load(to, replacement);
+          void advance();
+        }
+        // Once every clip fails, leave the last good frame/poster visible.
+      }
     };
 
-    // A clip that fails to load (404, decode error) is swapped for another so
-    // the room never freezes on a broken file.
-    const onError = (e: Event) => {
-      if (!alive) return;
-      const v = e.currentTarget as HTMLVideoElement;
-      const other = vids[1 - vids.indexOf(v)]!;
-      const pool = clips.filter((c) => !c.src.endsWith(name(v)) && !c.src.endsWith(name(other)));
-      if (pool.length === 0) return;
-      load(v, pick(pool, []));
-      if (vids.indexOf(v) === active) v.play().catch(() => {});
+    const syncPause = () => {
+      if (isPaused()) videos.forEach((v) => v.pause());
+      else if (busy) {
+        videos[incomingIndex].play().catch(() => {});
+      } else {
+        if (pending) {
+          const next = pending;
+          pending = undefined;
+          void advance(next);
+        } else if (!shown || videos[active].ended) void advance();
+        else videos[active].play().catch(() => {});
+      }
     };
-
-    // User-triggered event: dissolve from wherever we are into the requested
-    // clip. Longer fade than a seam because the frames differ.
-    handle.playNow = (src) => {
-      if (!alive) return;
-      const cur = vids[active]!;
-      const nxt = vids[1 - active]!;
-      clearTimeout(timer);
-      load(nxt, src);
-      ready(nxt).then(() => {
-        if (!alive) return;
-        nxt.play().then(() => {
-          nxt.style.transition = 'opacity 450ms ease';
-          cur.style.transition = 'opacity 450ms ease';
-          active = 1 - active;
-          show(active);
-          timer = setTimeout(() => {
-            if (!alive) return;
-            cur.pause();
-            nxt.style.transition = `opacity ${FADE_MS}ms linear`;
-            cur.style.transition = `opacity ${FADE_MS}ms linear`;
-            load(cur, pick(clips, [name(cur), name(nxt)]));
-          }, 500);
-        }).catch(() => {});
-      });
+    const onEnded = (event: Event) => {
+      if (event.currentTarget === videos[active] && !busy) void advance();
     };
-
-    vids.forEach((v) => {
-      v!.addEventListener('ended', onEnded);
-      v!.addEventListener('error', onError);
+    const onError = (event: Event) => {
+      const i = videos.indexOf(event.currentTarget as HTMLVideoElement);
+      failed.add(sources[i]);
+      if (i === active && !busy) void advance();
+    };
+    videos.forEach((v) => {
+      v.addEventListener('ended', onEnded);
+      v.addEventListener('error', onError);
     });
+    document.addEventListener('visibilitychange', syncPause);
+    api.current = { playNow: (src) => void advance(src), syncPause };
+    load(0, clips[0].src);
+    void advance();
     return () => {
-      alive = false;
-      handle.playNow = () => {};
+      generation++;
+      controller.abort();
       clearTimeout(timer);
-      vids.forEach((v) => {
-        v!.removeEventListener('ended', onEnded);
-        v!.removeEventListener('error', onError);
+      document.removeEventListener('visibilitychange', syncPause);
+      videos.forEach((v) => {
+        v.pause();
+        v.removeEventListener('ended', onEnded);
+        v.removeEventListener('error', onError);
+        v.removeAttribute('src');
+        v.load();
       });
+      api.current = { playNow: () => {}, syncPause: () => {} };
     };
   }, [clips]);
 
-  const common = {
-    className,
-    muted: true,
-    playsInline: true,
-    preload: 'auto' as const,
-    disablePictureInPicture: true,
-    style: { transition: `opacity ${FADE_MS}ms linear` }
-  };
   return (
-    <>
-      <video ref={a} {...common} poster={poster} style={{ ...common.style, opacity: 1 }} />
-      <video ref={b} {...common} style={{ ...common.style, opacity: 0 }} />
-    </>
+    <div className={className} aria-hidden="true">
+      {/* The poster remains beneath both decoders, including autoplay failures. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={poster} alt="" draggable={false} className="room__media" />
+      <video
+        ref={a}
+        muted
+        playsInline
+        preload="auto"
+        disablePictureInPicture
+        className="room__media"
+        style={{ opacity: 0 }}
+      />
+      <video
+        ref={b}
+        muted
+        playsInline
+        preload="auto"
+        disablePictureInPicture
+        className="room__media"
+        style={{ opacity: 0 }}
+      />
+    </div>
   );
 });
-
 export default ClipPlayer;

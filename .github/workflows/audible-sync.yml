@@ -3,8 +3,10 @@
 #
 # Secrets (Settings > Secrets and variables > Actions):
 #   AUDIBLE_CONFIG_TGZ_B64  base64 of a tarball of ~/.audible (config.toml + the
-#                           password-protected auth file) made on Ben's machine
-#   AUDIBLE_AUTH_PASSWORD   the password that encrypts that auth file
+#                           auth file), made on Ben's machine with
+#                             tar -czf - -C ~ .audible | base64 | gh secret set AUDIBLE_CONFIG_TGZ_B64
+#   AUDIBLE_AUTH_PASSWORD   the password that encrypts that auth file; omit if
+#                           the file is plain
 name: audible-sync
 on:
   schedule:
@@ -27,8 +29,9 @@ jobs:
         env:
           TGZ: ${{ secrets.AUDIBLE_CONFIG_TGZ_B64 }}
         run: |
-          mkdir -p "$HOME/.audible"
-          echo "$TGZ" | base64 -d | tar -xz -C "$HOME/.audible"
+          # the tarball's top-level entry is .audible/, so unpack into $HOME
+          echo "$TGZ" | base64 -d | tar -xz -C "$HOME"
+          test -f "$HOME/.audible/config.toml"
       - name: Sync
         env:
           AUDIBLE_AUTH_PASSWORD: ${{ secrets.AUDIBLE_AUTH_PASSWORD }}

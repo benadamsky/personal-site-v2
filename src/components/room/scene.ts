@@ -38,6 +38,11 @@ export const cat = {
   purr: '/sfx/purr.mp3'
 };
 
+// Ambient bed behind the sound toggle. Off until the visitor asks for it.
+export const sounds = {
+  rain: '/sfx/rain.mp3'
+};
+
 export const regions = {
   window: { x: 72.5, y: 0, w: 23.5, h: 70 },
   cat: { x: 77, y: 63, w: 17.5, h: 15 },

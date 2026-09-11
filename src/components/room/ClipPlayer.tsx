@@ -78,10 +78,17 @@ const ClipPlayer = forwardRef<ClipPlayerHandle, ClipPlayerProps>(function ClipPl
       vids[1 - i]!.style.opacity = '0';
     };
 
+    // Only the first clip loads up front. The second waits until the first is
+    // actually playing, so a blocked autoplay (or a slow connection) costs one
+    // clip, not two.
     const first = pick(clips, []);
     load(vids[0], first);
-    load(vids[1], pick(clips, [first]));
     show(0);
+    const onFirstPlaying = () => {
+      vids[0]!.removeEventListener('playing', onFirstPlaying);
+      if (alive && !vids[1]!.src) load(vids[1]!, pick(clips, [first]));
+    };
+    vids[0].addEventListener('playing', onFirstPlaying);
     vids[0].play().catch(() => {
       /* autoplay blocked: poster stays */
     });
@@ -90,6 +97,7 @@ const ClipPlayer = forwardRef<ClipPlayerHandle, ClipPlayerProps>(function ClipPl
       if (!alive) return;
       const cur = vids[active]!;
       const nxt = vids[1 - active]!;
+      if (!nxt.src) load(nxt, pick(clips, [name(cur)]));
       await ready(nxt);
       if (!alive) return;
       try {
@@ -130,19 +138,22 @@ const ClipPlayer = forwardRef<ClipPlayerHandle, ClipPlayerProps>(function ClipPl
       load(nxt, src);
       ready(nxt).then(() => {
         if (!alive) return;
-        nxt.play().then(() => {
-          nxt.style.transition = 'opacity 450ms ease';
-          cur.style.transition = 'opacity 450ms ease';
-          active = 1 - active;
-          show(active);
-          timer = setTimeout(() => {
-            if (!alive) return;
-            cur.pause();
-            nxt.style.transition = `opacity ${FADE_MS}ms linear`;
-            cur.style.transition = `opacity ${FADE_MS}ms linear`;
-            load(cur, pick(clips, [name(cur), name(nxt)]));
-          }, 500);
-        }).catch(() => {});
+        nxt
+          .play()
+          .then(() => {
+            nxt.style.transition = 'opacity 450ms ease';
+            cur.style.transition = 'opacity 450ms ease';
+            active = 1 - active;
+            show(active);
+            timer = setTimeout(() => {
+              if (!alive) return;
+              cur.pause();
+              nxt.style.transition = `opacity ${FADE_MS}ms linear`;
+              cur.style.transition = `opacity ${FADE_MS}ms linear`;
+              load(cur, pick(clips, [name(cur), name(nxt)]));
+            }, 500);
+          })
+          .catch(() => {});
       });
     };
 
@@ -154,6 +165,7 @@ const ClipPlayer = forwardRef<ClipPlayerHandle, ClipPlayerProps>(function ClipPl
       alive = false;
       handle.playNow = () => {};
       clearTimeout(timer);
+      vids[0]!.removeEventListener('playing', onFirstPlaying);
       vids.forEach((v) => {
         v!.removeEventListener('ended', onEnded);
         v!.removeEventListener('error', onError);

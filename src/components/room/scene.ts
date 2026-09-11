@@ -62,11 +62,15 @@ export const regions = {
 export type Focus = 'monitor' | 'shelf' | 'paper';
 export const focusRect: Record<Focus, Rect> = {
   monitor: regions.monitor,
-  shelf: { x: 0.5, y: 4, w: 24.5, h: 67 },
+  shelf: { x: 0.5, y: 4, w: 46, h: 67 },
   paper: { x: 48, y: 9, w: 11.5, h: 22 }
 };
 // how far the camera may push in on each object
-export const focusMaxScale: Record<Focus, number> = { monitor: 3.6, shelf: 3.6, paper: 5 };
+export const focusMaxScale: Record<Focus, number> = {
+  monitor: 3.6,
+  shelf: 3.6,
+  paper: 5
+};
 
 // Book spines, left to right, top shelf first. Index = position in books.ts.
 export const spines: Rect[] = [

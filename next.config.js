@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true
+  devIndicators: false,
+  turbopack: { root: __dirname }
 };
 
 module.exports = nextConfig;

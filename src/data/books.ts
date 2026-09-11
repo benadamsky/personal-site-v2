@@ -1,0 +1,53 @@
+import audible from './audible.json';
+
+// Index into `spines` in scene.ts (left to right, top shelf first). Spines
+// without a book are just books.
+export interface Book {
+  spine: number;
+  title: string;
+  author: string;
+  status?: 'listening' | 'finished' | 'shelf';
+  percent?: number;
+  finished?: string; // e.g. "Mar 2026"
+  note?: string;
+}
+
+export interface AudibleBook {
+  asin: string;
+  title: string;
+  author: string;
+  status: 'listening' | 'finished' | 'shelf';
+  percent?: number;
+  finished?: string;
+  added: string;
+}
+
+// Books that are not on Audible (paper, Kindle, whatever). TODO(ben): fill in.
+const manual: Omit<Book, 'spine'>[] = [];
+
+// Spines that read well as "real" books, in the order we fill them. Ten is
+// about what the wall beside the shelf can hold legibly.
+const slots = [2, 11, 4, 14, 20, 6, 23, 9, 17, 0];
+
+// Audible first (most recently active first, listening-now on top), then the
+// manual list. Notes from `notes` are matched by title.
+const notes: Record<string, string> = {
+  // 'Exact Title': 'One sentence on why it mattered.'
+};
+
+const fromAudible: Omit<Book, 'spine'>[] = (audible as AudibleBook[]).map((a) => ({
+  title: a.title,
+  author: a.author,
+  status: a.status,
+  percent: a.percent,
+  finished: a.finished
+}));
+
+/** Everything, in shelf order. The plain page lists all of it. */
+export const library: Omit<Book, 'spine'>[] = [...fromAudible, ...manual].map((b) => ({
+  ...b,
+  note: b.note ?? notes[b.title]
+}));
+
+/** The ones that get a spine in the room. */
+export const books: Book[] = library.slice(0, slots.length).map((b, i) => ({ ...b, spine: slots[i] }));

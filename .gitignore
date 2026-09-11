@@ -34,3 +34,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# agent-only keys (never shipped)
+.env.agents
+
+# agent worktrees
+.claude/

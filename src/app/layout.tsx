@@ -1,30 +1,24 @@
 import './globals.css';
-import { Poppins } from 'next/font/google';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import type { Metadata } from 'next';
+import { me } from '@/data/me';
 
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800', '900']
-});
-
-export const metadata = {
-  title: 'Ben Adamsky',
-  description: 'Building stuff - 2x founder, software engineer'
+export const metadata: Metadata = {
+  metadataBase: new URL(me.site),
+  title: { default: me.name, template: `%s · ${me.name}` },
+  description: me.description,
+  openGraph: {
+    type: 'website',
+    siteName: me.name,
+    title: me.name,
+    description: me.description
+  },
+  twitter: { card: 'summary_large_image' }
 };
 
-const RootLayout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <html lang="en" className="h-full">
-      <body
-        className={`${poppins.className} h-fit relative text-slate-100 cursor-cell`}
-      >
-        <Header />
-        {children}
-        <Footer />
-      </body>
-    </html>
-  );
-};
+const RootLayout = ({ children }: { children: React.ReactNode }) => (
+  <html lang="en">
+    <body>{children}</body>
+  </html>
+);
 
 export default RootLayout;

@@ -1,56 +1,34 @@
-'use client';
-import { useState, useEffect } from 'react';
+import type { Metadata, Viewport } from 'next';
+import { Fraunces } from 'next/font/google';
+import Room from '@/components/room/Room';
 
-const ESTIMATED_SPOTLIGHT_SIZE = 2000;
+// The serif is only for the room. The plain page uses whatever the device has.
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  axes: ['opsz', 'SOFT'],
+  variable: '--font-serif',
+  display: 'swap'
+});
 
-const Home = () => {
-  const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
-  const [spotlightSize, setSpotlightSize] = useState(ESTIMATED_SPOTLIGHT_SIZE);
-  const [viewportHeight, setViewportHeight] = useState('100vh');
-
-  useEffect(() => {
-    const resizeListener = () => {
-      setSpotlightSize(
-        Math.sqrt(window.innerWidth ** 2 + window.innerHeight ** 2)
-      );
-
-      setViewportHeight(`${window.innerHeight}px`);
-    };
-
-    resizeListener();
-
-    window.addEventListener('resize', resizeListener);
-
-    return () => {
-      window.removeEventListener('resize', resizeListener);
-    };
-  }, []);
-
-  const handleMouseMove = (event: { clientX: number; clientY: number }) => {
-    setCoordinates({ x: event.clientX, y: event.clientY });
-  };
-
-  return (
-    <main
-      className="relative"
-      onMouseMove={handleMouseMove}
-      style={{
-        height: viewportHeight,
-        backgroundImage: `url('/ba.png')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center center'
-      }}
-    >
-      <div
-        className="absolute inset-0 animate-fadeIn"
-        style={{
-          backgroundImage: `radial-gradient(circle ${spotlightSize}px at ${coordinates.x}px ${coordinates.y}px, transparent, rgba(0, 0, 0, .5)), url('/ba.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center center'
-        }}
-      />
-    </main>
-  );
+export const metadata: Metadata = {
+  alternates: { canonical: '/' }
 };
+
+export const viewport: Viewport = {
+  themeColor: '#0b0a0c',
+  viewportFit: 'cover'
+};
+
+const Home = () => (
+  <div className={fraunces.variable}>
+    <Room />
+    <noscript>
+      <p className="room__noscript">
+        This is a room you can look around in, and it needs JavaScript.{' '}
+        <a href="/plain">The plain version</a> has everything in it.
+      </p>
+    </noscript>
+  </div>
+);
 
 export default Home;

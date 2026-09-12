@@ -35,19 +35,33 @@ const notes: Record<string, string> = {
   // 'Exact Title': 'One sentence on why it mattered.'
 };
 
-const fromAudible: Omit<Book, 'spine'>[] = (audible as AudibleBook[]).map((a) => ({
-  title: a.title,
-  author: a.author,
-  status: a.status,
-  percent: a.percent,
-  finished: a.finished
-}));
+// Audible titles Ben finished off Audible (paper, Kindle), so the sync sees
+// them as unstarted. Exact titles as they appear in audible.json.
+const readElsewhere = new Set([
+  'Read Write Own',
+  'The Everything Token',
+  'Thinking in Systems',
+  'Traction',
+  'Good Strategy/Bad Strategy',
+  'The Sovereign Individual',
+  'Running Lean (3rd Edition)',
+  'High Growth Handbook',
+  'High Output Management',
+  'Never Split the Difference'
+]);
 
-/** Everything, in shelf order. The plain page lists all of it. */
-export const library: Omit<Book, 'spine'>[] = [...fromAudible, ...manual].map((b) => ({
-  ...b,
-  note: b.note ?? notes[b.title]
-}));
+const fromAudible: Omit<Book, 'spine'>[] = (audible as AudibleBook[]).map((a) =>
+  readElsewhere.has(a.title)
+    ? { title: a.title, author: a.author, status: 'finished' }
+    : { title: a.title, author: a.author, status: a.status, percent: a.percent, finished: a.finished }
+);
+
+const rank: Record<NonNullable<Book['status']>, number> = { listening: 0, finished: 1, shelf: 2 };
+
+/** Everything: listening now, then finished, then not started. The plain page lists all of it. */
+export const library: Omit<Book, 'spine'>[] = [...fromAudible, ...manual]
+  .map((b) => ({ ...b, note: b.note ?? notes[b.title] }))
+  .sort((a, b) => rank[a.status ?? 'shelf'] - rank[b.status ?? 'shelf']);
 
 /** The ones that get a spine in the room. */
 export const books: Book[] = library.slice(0, slots.length).map((b, i) => ({ ...b, spine: slots[i] }));

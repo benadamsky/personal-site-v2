@@ -86,11 +86,8 @@ const Plain = () => (
       <a href={now.url}>{now.company}</a>
     </h3>
     <p className="muted">
-      {now.role}, {now.dates}.
+      {now.role}, {now.dates}. {now.blurb}.
     </p>
-    {now.lines.map((l) => (
-      <p key={l}>{l}</p>
-    ))}
 
     {history.map((j) => (
       <Fragment key={j.company}>
@@ -127,11 +124,10 @@ const Plain = () => (
 
     <div className="noprint">
       <h2>Reading</h2>
-      <p className="muted">Synced from Audible.</p>
       {(['listening', 'finished', 'shelf'] as const).map((status) => {
         const list = library.filter((b) => b.status === status);
         if (list.length === 0) return null;
-        const head = status === 'listening' ? 'Listening now' : status === 'finished' ? 'Finished' : 'Not started yet';
+        const head = status === 'listening' ? 'Listening now' : status === 'finished' ? 'Finished' : 'Not started';
         return (
           <Fragment key={status}>
             <h3>{head}</h3>
@@ -160,7 +156,7 @@ const Plain = () => (
       <p className="muted">
         {/* a plain anchor on purpose: <Link> would pull the router onto a page that has no scripts */}
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-        There is also <a href="/">the room</a>, which is the same information with a cat in it.
+        There&apos;s also <a href="/">the room</a>.
       </p>
     </div>
   </main>

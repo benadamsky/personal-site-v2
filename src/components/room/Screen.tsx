@@ -14,7 +14,7 @@ const Screen = () => (
         <p key={l}>{l}</p>
       ))}
       <a href={now.url} target="_blank" rel="noopener noreferrer">
-        {now.url.replace('https://', '')}
+        {now.url.replace(/^https:\/\/(www\.)?/, '')}
       </a>
     </div>
   </div>

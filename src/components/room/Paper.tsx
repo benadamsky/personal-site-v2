@@ -1,11 +1,12 @@
 import { history } from '@/data/work';
 
-// The sheet pinned to the board: everything before now, one line each.
+// The sheet pinned to the board: what came before, one line each. Six fit;
+// the plain page and the PDF have the whole list.
 // Later sheets on the same board can be writing.
 const Paper = () => (
   <div className="paper">
     <p className="paper__head">Before Dreamwork</p>
-    {history.map((j) => (
+    {history.slice(0, 6).map((j) => (
       <p className="paper__row" key={j.company}>
         <span className="paper__co">
           {j.company} <span className="paper__yrs">{j.years}</span>

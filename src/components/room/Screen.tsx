@@ -6,7 +6,7 @@ const Screen = () => (
   <div className="screen">
     <div className="screen__bar">
       <span className="screen__tab is-on">{now.project.toLowerCase()}</span>
-      <span className="screen__tab">{now.company.toLowerCase()}</span>
+      <span className="screen__tab">readme</span>
     </div>
     <div className="screen__body">
       <p className="screen__title">{now.project}</p>

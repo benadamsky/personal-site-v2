@@ -340,10 +340,10 @@ body {
 .paper {
   height: 100%;
   box-sizing: border-box;
-  padding: 8% 8% 6%;
+  padding: 7% 8% 5%;
   color: #2d2118;
-  font-size: calc(var(--h, 400px) / 37);
-  line-height: 1.32;
+  font-size: calc(var(--h, 400px) / 40);
+  line-height: 1.26;
   overflow-y: auto;
   scrollbar-width: none;
 }

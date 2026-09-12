@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { Fragment } from 'react';
 import { me } from '@/data/me';
 import { now, history, skills, education, projects } from '@/data/work';
 import { library } from '@/data/books';
@@ -14,150 +15,154 @@ export const viewport: Viewport = {
   themeColor: '#ffffff'
 };
 
-// Everything on the site, as a document. No fonts, no scripts, one small
-// stylesheet inline. Also what the résumé PDF is printed from
-// (scripts/resume-pdf.sh), so the print rules below matter.
+// Everything on the site, as a document. Browser defaults with a few lines
+// on top: system font, one column, blue links. Also what the resume PDF is
+// printed from (scripts/resume-pdf.sh), so the print rules below matter.
 const css = `
-.plain{max-width:44rem;margin:0 auto;padding:2.5rem 1.25rem 4rem;font:16px/1.55 system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;color:#000;background:#fff}
-.plain h1{font-size:1.75rem;margin:0}
-.plain h2{font-size:1.15rem;margin:2.2rem 0 .6rem}
-.plain h3{font-size:1rem;margin:1.2rem 0 .1rem}
-.plain p,.plain ul{margin:.3rem 0}
-.plain ul{padding-left:1.2rem}
-.plain a{color:#000}
-.plain .meta{color:#555;font-size:.92rem}
-.plain .lead{margin-top:.25rem;color:#333}
-.plain .links a{display:inline-block;margin-right:1rem}
-.plain .books li{margin:.15rem 0}
-.plain .back{margin-top:3rem;padding-top:1rem;border-top:1px solid #ddd;color:#555;font-size:.92rem}
+.plain{max-width:40rem;margin:auto;padding:2rem;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-size:1em;line-height:1.5em;color:#222;background:#fff}
+.plain h1{font-size:1.6em;color:#111}
+.plain h2{font-size:1.3em;margin:1.3em 0 .2em;color:#111}
+.plain h3{font-size:1.1em;margin:1.1em 0 0;color:#111}
+.plain p{margin:.5em 0 1em}
+.plain ul{padding-left:20px}
+.plain li{margin:.5em 0 .66em}
+.plain a{color:#0074D9}
+.plain .muted{color:#777}
+.plain hr{border:0;border-top:1px solid #eee;width:75%;margin:2em auto}
+.plain .print-only{display:none}
 @media print{
+  .plain .print-only{display:block}
   @page{margin:.6in}
   .plain{max-width:none;padding:0;font-size:10.5pt;line-height:1.4}
-  .plain a{text-decoration:none}
-  .plain h2{margin:1.1rem 0 .3rem;font-size:12pt}
-  .plain h3{margin:.7rem 0 0;font-size:10.5pt;break-after:avoid}
-  .plain ul{margin:.15rem 0}
-  .plain li{break-inside:avoid}
+  .plain a{color:#222;text-decoration:none}
+  .plain h2{margin:1em 0 .2em;font-size:12pt}
+  .plain h3{margin:.8em 0 0;font-size:10.5pt;break-after:avoid}
+  .plain p{margin:.2em 0 .5em}
+  .plain li{margin:.15em 0;break-inside:avoid}
   .plain .noprint{display:none!important}
 }
 `;
 
+// Paragraph text with [label](url) links, nothing else.
+const rich = (text: string) =>
+  text.split(/(\[[^\]]+\]\([^)]+\))/g).map((part, i) => {
+    const m = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    return m ? (
+      <a key={i} href={m[2]}>
+        {m[1]}
+      </a>
+    ) : (
+      <Fragment key={i}>{part}</Fragment>
+    );
+  });
+
 const Plain = () => (
   <main className="plain">
     <style>{css}</style>
-    <header>
-      <h1>{me.name}</h1>
-      <p className="lead">{me.title}</p>
-      <p className="links">
-        <a href={`mailto:${me.email}`}>{me.email}</a>
-        {me.links.map((l) => (
-          <a key={l.url} href={l.url}>
-            {l.name}
-          </a>
-        ))}
-        <a className="noprint" href="/resume.pdf">
-          Résumé (PDF)
-        </a>
-      </p>
-    </header>
+    <h1>{me.name}</h1>
 
-    <section>
-      <h2>Now</h2>
-      <h3>
-        {now.role}, {now.project} <span className="meta">({now.company})</span>
-      </h3>
-      <p className="meta">{now.dates}</p>
-      {now.lines.map((l) => (
-        <p key={l}>{l}</p>
-      ))}
+    <div className="noprint">
+      <p>{rich(me.line)}</p>
       <p>
-        <a href={now.url}>{now.url.replace('https://', '')}</a>
-      </p>
-    </section>
-
-    <section>
-      <h2>Before that</h2>
-      {history.map((j) => (
-        <article key={j.company}>
-          <h3>
-            {j.role}, {j.company}
-          </h3>
-          <p className="meta">
-            {j.dates}
-            {j.blurb ? ` · ${j.blurb}` : ''}
-          </p>
-          <ul>
-            {j.bullets.map((b) => (
-              <li key={b}>{b}</li>
-            ))}
-          </ul>
-        </article>
-      ))}
-    </section>
-
-    <section>
-      <h2>Projects</h2>
-      <ul>
-        {projects.map((p) => (
-          <li key={p.name}>
-            <a href={p.url}>{p.name}</a>: {p.line}
-          </li>
+        Email <a href={`mailto:${me.email}`}>{me.email}</a>
+        {me.links.map((l) => (
+          <Fragment key={l.url}>
+            {' · '}
+            <a href={l.url}>{l.name}</a>
+          </Fragment>
         ))}
-      </ul>
-    </section>
-
-    <section>
-      <h2>Skills</h2>
-      <p>{skills.join(' · ')}</p>
-    </section>
-
-    <section>
-      <h2>Education</h2>
-      <p>{education.line}</p>
-      <p className="meta">
-        {education.school}, {education.dates}
+        {' · '}
+        <a href="/resume.pdf">Resume (PDF)</a>
       </p>
-    </section>
+    </div>
 
-    <section className="noprint books">
-      <h2>On the shelf</h2>
-      <p className="meta">Synced from Audible.</p>
+    <p className="print-only">
+      {me.title}. {me.email}
+    </p>
+
+    <h2>Work</h2>
+
+    <h3>
+      <a href={now.url}>{now.company}</a>
+    </h3>
+    <p className="muted">
+      {now.role}, {now.dates}.
+    </p>
+    {now.lines.map((l) => (
+      <p key={l}>{l}</p>
+    ))}
+
+    {history.map((j) => (
+      <Fragment key={j.company}>
+        <h3>{j.url ? <a href={j.url}>{j.company}</a> : j.company}</h3>
+        <p className="muted">
+          {j.role}, {j.dates}.{j.blurb ? ` ${j.blurb}.` : ''}
+        </p>
+        <ul>
+          {j.bullets.map((b) => (
+            <li key={b}>{b}</li>
+          ))}
+        </ul>
+      </Fragment>
+    ))}
+
+    <h2>Projects</h2>
+    <ul>
+      {projects.map((p) => (
+        <li key={p.name}>
+          <a href={p.url}>{p.name}</a>. {p.line}.
+        </li>
+      ))}
+    </ul>
+
+    <h2>Skills</h2>
+    <p>{skills.join(', ')}.</p>
+
+    <h2>Education</h2>
+    <p>
+      {education.line}, {education.school}, {education.dates}.
+    </p>
+
+    <hr className="noprint" />
+
+    <div className="noprint">
+      <h2>Reading</h2>
+      <p className="muted">Synced from Audible.</p>
       {(['listening', 'finished', 'shelf'] as const).map((status) => {
         const list = library.filter((b) => b.status === status);
         if (list.length === 0) return null;
         const head = status === 'listening' ? 'Listening now' : status === 'finished' ? 'Finished' : 'Not started yet';
         return (
-          <div key={status}>
+          <Fragment key={status}>
             <h3>{head}</h3>
             <ul>
               {list.map((b) => (
                 <li key={b.title}>
-                  {b.title} <span className="meta">{b.author}</span>
-                  {status === 'listening' && b.percent ? <span className="meta">, {b.percent}%</span> : null}
+                  {b.title}, {b.author}
+                  {status === 'listening' && b.percent ? <span className="muted"> ({b.percent}%)</span> : null}
                 </li>
               ))}
             </ul>
-          </div>
+          </Fragment>
         );
       })}
-    </section>
 
-    <section className="noprint">
-      <h2>On the desk</h2>
+      <h2>Desk</h2>
       <ul>
         {setup.map((g) => (
           <li key={g.id}>
-            {g.label}: <a href={g.url}>{g.name}</a>
+            <a href={g.url}>{g.name}</a> ({g.label})
           </li>
         ))}
       </ul>
-    </section>
 
-    <p className="back noprint">
-      {/* a plain anchor on purpose: <Link> would pull the router onto a page that has no scripts */}
-      {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-      There is also <a href="/">the room</a>, which is the same information with a cat in it.
-    </p>
+      <hr />
+      <p className="muted">
+        {/* a plain anchor on purpose: <Link> would pull the router onto a page that has no scripts */}
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+        There is also <a href="/">the room</a>, which is the same information with a cat in it.
+      </p>
+    </div>
   </main>
 );
 

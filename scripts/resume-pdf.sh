@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Print the résumé PDF from the plain page. The print rules in
+# Print the resume PDF from the plain page. The print rules in
 # src/app/plain/page.tsx decide what is on it (the shelf and desk are not).
 #   yarn build && yarn start &   # or `yarn dev`
 #   scripts/resume-pdf.sh http://localhost:3000

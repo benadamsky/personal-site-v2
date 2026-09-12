@@ -3,33 +3,49 @@ export interface Job {
   role: string;
   /** Short span for the sheet on the pinboard, e.g. "2022 to 2024". */
   years: string;
-  /** Full span for the résumé, e.g. "Dec 2022 - Apr 2024". */
+  /** Full span for the resume, e.g. "Dec 2022 - Apr 2024". */
   dates: string;
   /** One sentence for the pinboard. */
   line: string;
-  /** What the company is, for the résumé. */
+  /** What the company is, for the resume. */
   blurb?: string;
-  /** Résumé bullets. */
+  /** Resume bullets. */
   bullets: string[];
   url?: string;
 }
 
 // Now: what is on the monitor.
 export const now = {
-  company: 'Ponder',
+  company: 'Dreamwork',
   project: 'Dreamwork',
   role: 'Co-founder, CTO',
-  dates: 'Dec 2023 - now',
+  dates: '2026 - now',
   url: 'https://dreamwork.ai',
+  blurb: 'An agent-first job search platform',
   // TODO(ben): rewrite in your voice.
   lines: [
-    'Dreamwork is an agent-first job search platform. Co-founder and CTO since December 2023.',
+    'Dreamwork is an agent-first job search platform. I am the co-founder and CTO.',
     'Most days are spent on the agent runtime, the matching pipeline, and the parts of the product that make a job hunt feel less like a second job.'
   ]
 };
 
 // Then: the sheet pinned to the board. One sentence each, oldest last.
 export const history: Job[] = [
+  {
+    company: 'Ponder',
+    role: 'Co-founder, CTO',
+    years: '2023 to 2026',
+    dates: 'Dec 2023 - 2026',
+    url: 'https://weponder.io',
+    line: 'Social surveys and prediction games on Farcaster. Over 100,000 users; the prediction game took 590,000 on-chain votes.',
+    blurb: 'Social surveys and prediction games on Farcaster',
+    // The vote, voter, and wallet figures are from PostHog (live SDK data,
+    // Jun 2025 to Feb 2026). The 100,000 users figure is Ben's and Colin's.
+    bullets: [
+      'Grew to over 100,000 users on Farcaster',
+      'Built the prediction game: 590,000 on-chain votes from 21,000 voters, with 42,000 wallets set up through the app'
+    ]
+  },
   {
     company: 'Freeport',
     role: 'Software engineer',

@@ -8,8 +8,8 @@ import { me } from '@/data/me';
 // print rules matter.
 const css = `
 .plain{max-width:42rem;margin:auto;padding:2.5rem 2rem 4rem;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-size:1em;line-height:1.5;color:#222;background:#fff}
-.plain header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.4rem 1.5rem;margin:0 0 2rem}
-.plain header .site{font-size:1.6em;font-weight:700;color:#111;text-decoration:none;margin:0}
+.plain header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.4rem 1.5rem;margin:0 0 2rem}
+.plain header .site{font-size:1.6em;font-weight:700;color:#111;text-decoration:none;margin:0;line-height:1.2}
 .plain nav{display:flex;gap:1.2rem}
 .plain nav a{color:#777;text-decoration:none}
 .plain nav a:hover{color:#111}

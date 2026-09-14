@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import Link from 'next/link';
 import Rain from './Rain';
 import Screen from './Screen';
 import Paper from './Paper';
@@ -440,9 +441,9 @@ const Room = () => {
       )}
 
       {small && !focus && !hinted && <p className="room__hint">drag to look around, tap things</p>}
-      <a className="room__name" href="/plain" title="The plain version of this site">
+      <Link className="room__name" href="/" title="The plain version of this site">
         Ben Adamsky
-      </a>
+      </Link>
       <button className="room__sound" onClick={(e) => { e.stopPropagation(); toggleSound(); }} aria-pressed={sound}>
         {sound ? 'sound on' : 'sound off'}
       </button>

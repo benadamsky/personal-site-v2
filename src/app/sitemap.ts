@@ -3,6 +3,7 @@ import { me } from '@/data/me';
 
 const sitemap = (): MetadataRoute.Sitemap => [
   { url: `${me.site}/`, changeFrequency: 'weekly', priority: 1 },
+  { url: `${me.site}/bookshelf`, changeFrequency: 'weekly', priority: 0.6 },
   { url: `${me.site}/room`, changeFrequency: 'weekly', priority: 0.8 }
 ];
 

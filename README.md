@@ -2,11 +2,11 @@
 
 Live at [benadamsky.com](https://benadamsky.com/).
 
-The root is a plain document: no fonts, one small stylesheet, blue links.
-`/room` is the same information as a painted room you can look around in;
+The root is a plain document: no fonts, one small stylesheet, blue links,
+a short nav down the left (About, Bookshelf, My room). `/bookshelf` is the
+reading list. `/room` is the same information as a painted room you can look around in;
 the bookshelf, the monitor, the sheet on the pinboard, and the cat each do
-something. "My room" at the top of the document opens it, and the name in
-the corner of the room comes back.
+something. "My room" in the nav opens it, and the name in the corner of the room comes back.
 
 - `src/components/room/` is the room. `scene.ts` holds every hotspot in
   percent of the image.

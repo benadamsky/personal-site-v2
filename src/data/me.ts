@@ -9,6 +9,9 @@ export const me = {
     { name: 'LinkedIn', url: 'https://linkedin.com/in/benadamsky' },
     { name: 'Farcaster', url: 'https://farcaster.xyz/ba' }
   ],
-  // The one line under the name on the root page. [label](url) links only.
-  line: "Building a job search that doesn't hate you at Dreamwork. Prev Ponder."
+  // The intro on the front page, one paragraph per line. [label](url) links only.
+  intro: [
+    "I'm building Dreamwork, an agent-first job search platform.",
+    'Before that I co-founded Ponder and Kettle, and was an early engineer at Freeport and Branch.'
+  ]
 };

@@ -17,8 +17,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - The shelf reads `src/data/audible.json`, written by `node scripts/audible-sync.mjs`
   (unofficial audible-cli; Ben runs `audible quickstart` once himself, never an agent).
 - Hotspot geometry is in `src/components/room/scene.ts`, in percent of the image.
-- `/` is the whole site as a document with no fonts and one inline stylesheet; the
-  room lives at `/room`. `scripts/resume-pdf.sh` prints `public/resume.pdf` from
+- `/` and `/bookshelf` are the site as a document (shared shell in
+  `src/components/plain/Shell.tsx`, no fonts, one inline stylesheet); the room lives at `/room`. `scripts/resume-pdf.sh` prints `public/resume.pdf` from
   the root, so keep the `@media print` rules in `src/app/page.tsx` honest.
 - On phones and portrait tablets (`small` in `Room.tsx`) content opens in a bottom
   sheet and the camera frames the object above it. Desktop content sits on the object.

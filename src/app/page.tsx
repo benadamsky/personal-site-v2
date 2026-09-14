@@ -1,9 +1,7 @@
 import type { Metadata, Viewport } from 'next';
-import { Fragment } from 'react';
-import Link from 'next/link';
+import Shell, { Ext, Row, rich } from '@/components/plain/Shell';
 import { me } from '@/data/me';
 import { now, history, education, projects } from '@/data/work';
-import { library } from '@/data/books';
 import { setup } from '@/data/setup';
 
 export const metadata: Metadata = {
@@ -14,121 +12,25 @@ export const viewport: Viewport = {
   themeColor: '#ffffff'
 };
 
-// The site, as a document. Browser defaults with a few lines on top: system
-// font, one column, blue links. /room is the same information as a room you
-// can look around in. Also what the resume PDF is printed from
-// (scripts/resume-pdf.sh), so the print rules below matter.
-const css = `
-.plain{max-width:40rem;margin:auto;padding:2rem;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-size:1em;line-height:1.5;color:#222;background:#fff}
-.plain h1{font-size:1.6em;margin:0 0 .6em;color:#111}
-.plain h2{font-size:1.15em;margin:2em 0 .7em;color:#111}
-.plain p{margin:0 0 .6em}
-.plain a{color:#0074D9}
-.plain .muted{color:#777}
-.plain .links a{margin-right:.9em}
-.plain .row{display:grid;grid-template-columns:6.5rem 1fr auto;column-gap:1rem;margin:0 0 1.1em}
-.plain .row .yrs{color:#777;font-variant-numeric:tabular-nums}
-.plain .row .co{font-weight:600;color:#111}
-.plain .row .role{color:#777}
-.plain .row .what{margin:.1em 0 0}
-.plain .row .visit{font-size:.9em;align-self:start}
-.plain .row .visit::after{content:" \\2197"}
-.plain ul{margin:0;padding-left:1.2em}
-.plain li{margin:0}
-.plain .books h3{font-size:1em;margin:1em 0 .2em;color:#111}
-.plain .print-only{display:none}
-@media (max-width:520px){
-  .plain{padding:1.5rem 1.25rem}
-  .plain .row{grid-template-columns:1fr auto}
-  .plain .row .yrs{grid-column:1/-1;font-size:.9em}
-}
-@media print{
-  @page{margin:.6in}
-  .plain{max-width:none;padding:0;font-size:10.5pt;line-height:1.4}
-  .plain a{color:#222;text-decoration:none}
-  .plain h2{margin:1.2em 0 .4em;font-size:12pt}
-  .plain .row{margin:0 0 .8em;break-inside:avoid}
-  .plain .print-only{display:block}
-  .plain .noprint{display:none!important}
-}
-`;
-
-// Anything that leaves the site opens in a new tab.
-const Ext = ({ href, className, children }: { href: string; className?: string; children: React.ReactNode }) => (
-  <a href={href} className={className} target="_blank" rel="noopener noreferrer">
-    {children}
-  </a>
-);
-
-// Paragraph text with [label](url) links, nothing else.
-const rich = (text: string) =>
-  text.split(/(\[[^\]]+\]\([^)]+\))/g).map((part, i) => {
-    const m = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
-    return m ? (
-      <Ext key={i} href={m[2]}>
-        {m[1]}
-      </Ext>
-    ) : (
-      <Fragment key={i}>{part}</Fragment>
-    );
-  });
-
-interface RowProps {
-  years?: string;
-  name: string;
-  role?: string;
-  what: string;
-  url?: string;
-  bullets?: string[];
-}
-
-// One role or project: years on the left, the rest on the right, a small
-// "Visit" at the edge when there is somewhere to go.
-const Row = ({ years, name, role, what, url, bullets }: RowProps) => (
-  <div className="row">
-    {years && <span className="yrs">{years}</span>}
-    <div style={years ? undefined : { gridColumn: '1 / 3' }}>
-      <span className="co">{name}</span>
-      {role && <span className="role">, {role}</span>}
-      <p className="what">{what}</p>
-      {bullets && bullets.length > 0 && (
-        <ul className="print-only">
-          {bullets.map((b) => (
-            <li key={b}>{b}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-    {url ? (
-      <Ext className="visit noprint" href={url}>
-        Visit
-      </Ext>
-    ) : (
-      <span />
-    )}
-  </div>
-);
-
 const span = (years: string) => years.replace(' to ', '–');
 
-const Plain = () => (
-  <main className="plain">
-    <style>{css}</style>
+const Home = () => (
+  <Shell current="/">
     <h1>{me.name}</h1>
 
     <div className="noprint">
+      {me.intro.map((p) => (
+        <p key={p}>{rich(p)}</p>
+      ))}
       <p>
-        <Link href="/room">My room</Link>
-      </p>
-      <p>{rich(me.line)}</p>
-      <p className="links">
-        <a href={`mailto:${me.email}`}>{me.email}</a>
-        {me.links.map((l) => (
-          <Ext key={l.url} href={l.url}>
-            {l.name}
-          </Ext>
+        You can reach me at <a href={`mailto:${me.email}`}>{me.email}</a>, or find me on{' '}
+        {me.links.map((l, i) => (
+          <span key={l.url}>
+            {i > 0 && (i === me.links.length - 1 ? ', and ' : ', ')}
+            <Ext href={l.url}>{l.name}</Ext>
+          </span>
         ))}
-        <Ext href="/resume.pdf">Resume</Ext>
+        . There is also a <Ext href="/resume.pdf">resume</Ext>.
       </p>
     </div>
 
@@ -156,27 +58,7 @@ const Plain = () => (
       </span>
     </p>
 
-    <div className="noprint books">
-      <h2>Reading</h2>
-      {(['listening', 'finished', 'shelf'] as const).map((status) => {
-        const list = library.filter((b) => b.status === status);
-        if (list.length === 0) return null;
-        const head = status === 'listening' ? 'Listening now' : status === 'finished' ? 'Finished' : 'Not started';
-        return (
-          <Fragment key={status}>
-            <h3>{head}</h3>
-            <ul>
-              {list.map((b) => (
-                <li key={b.title}>
-                  {b.title} <span className="muted">{b.author}</span>
-                  {status === 'listening' && b.percent ? <span className="muted">, {b.percent}%</span> : null}
-                </li>
-              ))}
-            </ul>
-          </Fragment>
-        );
-      })}
-
+    <div className="noprint">
       <h2>On my desk</h2>
       <ul>
         {setup.map((g) => (
@@ -186,7 +68,7 @@ const Plain = () => (
         ))}
       </ul>
     </div>
-  </main>
+  </Shell>
 );
 
-export default Plain;
+export default Home;

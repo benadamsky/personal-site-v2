@@ -7,11 +7,11 @@ export const me = {
   links: [
     { name: 'GitHub', url: 'https://github.com/benadamsky' },
     { name: 'LinkedIn', url: 'https://linkedin.com/in/benadamsky' },
-    { name: 'Farcaster', url: 'https://farcaster.xyz/ba' }
+    { name: 'X', url: 'https://x.com/benadamsky' }
   ],
   // The intro on the front page, one paragraph per line. [label](url) links only.
   intro: [
     "I'm building Dreamwork, an agent-first job search platform.",
-    'Before that I co-founded Ponder and Kettle, and was an early engineer at Freeport and Branch.'
+    'Before that I co-founded Ponder, and was an early engineer at Freeport and Branch.'
   ]
 };

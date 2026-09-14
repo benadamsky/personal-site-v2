@@ -51,6 +51,7 @@ const css = `
 export const pages = [
   { href: '/', label: 'About' },
   { href: '/bookshelf', label: 'Bookshelf' },
+  { href: '/resume.pdf', label: 'Resume', external: true },
   { href: '/room', label: 'My room' }
 ];
 
@@ -123,11 +124,17 @@ const Shell = ({ current, home, children }: { current: string; home?: boolean; c
         </Link>
       )}
       <nav className="noprint">
-        {pages.map((p) => (
-          <Link key={p.href} href={p.href} className={p.href === current ? 'is-on' : undefined}>
-            {p.label}
-          </Link>
-        ))}
+        {pages.map((p) =>
+          p.external ? (
+            <a key={p.href} href={p.href} target="_blank" rel="noopener noreferrer">
+              {p.label}
+            </a>
+          ) : (
+            <Link key={p.href} href={p.href} className={p.href === current ? 'is-on' : undefined}>
+              {p.label}
+            </Link>
+          )
+        )}
       </nav>
     </header>
     <main>{children}</main>

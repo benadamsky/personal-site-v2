@@ -29,7 +29,7 @@ const Home = () => (
             <Ext href={l.url}>{l.name}</Ext>
           </span>
         ))}
-        . There is also a <Ext href="/resume.pdf">resume</Ext>.
+        .
       </p>
     </div>
 

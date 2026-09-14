@@ -106,8 +106,6 @@ export const history: Job[] = [
   }
 ];
 
-export const skills = ['TypeScript', 'React, Next.js, Node.js', 'PostgreSQL, Prisma', 'Vercel, AWS'];
-
 export const education = {
   school: 'Rutgers, New Brunswick',
   line: 'Coursework toward a B.S. in Computer Science',

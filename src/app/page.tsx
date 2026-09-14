@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Fragment } from 'react';
 import Link from 'next/link';
 import { me } from '@/data/me';
-import { now, history, skills, education, projects } from '@/data/work';
+import { now, history, education, projects } from '@/data/work';
 import { library } from '@/data/books';
 import { setup } from '@/data/setup';
 
@@ -140,9 +140,6 @@ const Plain = () => (
       <Row key={p.name} name={p.name} what={`${p.line}.`} url={p.url} />
     ))}
 
-    <h2>Skills</h2>
-    <p>{skills.join(', ')}.</p>
-
     <h2>Education</h2>
     <p>
       {education.line}. <span className="muted">{education.school}, {education.dates}.</span>
@@ -169,7 +166,7 @@ const Plain = () => (
         );
       })}
 
-      <h2>Desk</h2>
+      <h2>On my desk</h2>
       <ul>
         {setup.map((g) => (
           <li key={g.id}>

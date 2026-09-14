@@ -53,14 +53,21 @@ const css = `
 }
 `;
 
+// Anything that leaves the site opens in a new tab.
+const Ext = ({ href, className, children }: { href: string; className?: string; children: React.ReactNode }) => (
+  <a href={href} className={className} target="_blank" rel="noopener noreferrer">
+    {children}
+  </a>
+);
+
 // Paragraph text with [label](url) links, nothing else.
 const rich = (text: string) =>
   text.split(/(\[[^\]]+\]\([^)]+\))/g).map((part, i) => {
     const m = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
     return m ? (
-      <a key={i} href={m[2]}>
+      <Ext key={i} href={m[2]}>
         {m[1]}
-      </a>
+      </Ext>
     ) : (
       <Fragment key={i}>{part}</Fragment>
     );
@@ -93,9 +100,9 @@ const Row = ({ years, name, role, what, url, bullets }: RowProps) => (
       )}
     </div>
     {url ? (
-      <a className="visit noprint" href={url}>
+      <Ext className="visit noprint" href={url}>
         Visit
-      </a>
+      </Ext>
     ) : (
       <span />
     )}
@@ -117,11 +124,11 @@ const Plain = () => (
       <p className="links">
         <a href={`mailto:${me.email}`}>{me.email}</a>
         {me.links.map((l) => (
-          <a key={l.url} href={l.url}>
+          <Ext key={l.url} href={l.url}>
             {l.name}
-          </a>
+          </Ext>
         ))}
-        <a href="/resume.pdf">Resume</a>
+        <Ext href="/resume.pdf">Resume</Ext>
       </p>
     </div>
 
@@ -174,7 +181,7 @@ const Plain = () => (
       <ul>
         {setup.map((g) => (
           <li key={g.id}>
-            <a href={g.url}>{g.name}</a> <span className="muted">{g.label}</span>
+            <Ext href={g.url}>{g.name}</Ext> <span className="muted">{g.label}</span>
           </li>
         ))}
       </ul>

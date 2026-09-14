@@ -142,7 +142,11 @@ const Plain = () => (
 
     <h2>Education</h2>
     <p>
-      {education.line}. <span className="muted">{education.school}, {education.dates}.</span>
+      {education.line}
+      <br />
+      <span className="muted">
+        {education.school}, {education.dates}
+      </span>
     </p>
 
     <div className="noprint books">

@@ -114,9 +114,9 @@ export const education = {
 
 export const projects = [
   {
-    name: 'Surveycaster',
-    line: 'Open source survey bot for Farcaster',
-    url: 'https://github.com/benadamsky/surveycaster'
+    name: 'Tech Internships 2027',
+    line: 'US tech internships for 2026 to 2027, updated daily on GitHub',
+    url: 'https://github.com/dreamworkhq/Tech-Internships-2027'
   },
   {
     name: 'Libs vs Cons',

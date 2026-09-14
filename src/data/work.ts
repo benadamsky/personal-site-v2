@@ -70,6 +70,7 @@ export const history: Job[] = [
     role: 'Founding engineer',
     years: '2020 to 2021',
     dates: 'Apr 2020 - Jan 2021',
+    url: 'https://www.worklife.news/culture/bringing-serendipity-back-to-the-office/',
     line: 'A virtual HQ for remote teams. Peer-to-peer spatial audio, and the MVP that raised $15.5M.',
     blurb: 'A virtual HQ for remote teams',
     bullets: ['Core team on the MVP that raised $15.5M (Naval Ravikant, Sahil Lavingia, Homebrew)']

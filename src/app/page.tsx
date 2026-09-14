@@ -15,8 +15,7 @@ export const viewport: Viewport = {
 const span = (years: string) => years.replace(' to ', '–');
 
 const Home = () => (
-  <Shell current="/">
-    <h1>{me.name}</h1>
+  <Shell current="/" home>
 
     <div className="noprint">
       {me.intro.map((p) => (

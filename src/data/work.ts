@@ -45,15 +45,23 @@ export const history: Job[] = [
     dates: 'Dec 2022 - Apr 2024',
     line: 'Fractional fine art. Built the launch that sold a collection of Warhols in six weeks, and the virtual gallery that hung them.',
     blurb: 'Fractional fine art',
-    bullets: ['The Warhol launch did $150k+ in its first six weeks', 'Growth work w/ the CEO + CTO: referrals, collector programs']
+    bullets: [
+      'The Warhol launch did $150k+ in its first six weeks',
+      'Platform features end to end: API routes, backend models, the analytics pipeline',
+      'Growth work w/ the CEO + CTO: referrals, collector programs'
+    ]
   },
   {
     company: 'Upwork',
     role: 'Freelance React developer',
     years: '2018 to 2022',
     dates: 'Dec 2018 - Dec 2022',
-    line: 'Four years of dashboards, onboarding flows, and interfaces for clients from seed stage to Lyft and Carnival.',
-    bullets: ['Top Rated in year one, Expert-Vetted after that (top 1% on the platform)']
+    line: 'Four years of dashboards, onboarding flows, and interfaces for startups through enterprises, plus web and brand copy for clients like Lyft and Carnival.',
+    bullets: [
+      'Top Rated in year one, Expert-Vetted after that (top 1% on the platform)',
+      'Dashboards, onboarding flows, landing pages, API integrations, and responsive interfaces for web and native apps',
+      'Web and brand copy for businesses, including Lyft and Carnival Cruise Line'
+    ]
   },
   {
     company: 'Kettle',
@@ -62,7 +70,7 @@ export const history: Job[] = [
     dates: 'May 2021 - Jul 2022',
     line: 'Online events built for communities. Ran product from idea to launch with a team of four engineers.',
     blurb: 'Online events for communities',
-    bullets: []
+    bullets: ['Built virtual event software with real-time activities']
   },
   {
     company: 'Branch',
@@ -71,16 +79,22 @@ export const history: Job[] = [
     dates: 'Apr 2020 - Jan 2021',
     line: 'A virtual HQ for remote teams. Peer-to-peer spatial audio, and the MVP that raised $15.5M.',
     blurb: 'A virtual HQ for remote teams',
-    bullets: ['Core team on the MVP that raised $15.5M (Naval Ravikant, Sahil Lavingia, Homebrew)']
+    bullets: [
+      'Core team on the MVP that raised $15.5M (Naval Ravikant, Sahil Lavingia, Homebrew)',
+      'Major architectural decisions for the core app and the custom style library'
+    ]
   },
   {
     company: 'Konjure',
-    role: 'Co-founder',
+    role: 'Co-founder, Director of Operations',
     years: '2018 to 2019',
     dates: 'May 2018 - Dec 2019',
     line: 'A decentralized website builder on IPFS. Finalist in several accelerators.',
     blurb: 'A decentralized website builder on IPFS',
-    bullets: ['KONJ tokenomics + a desktop app for running validator nodes']
+    bullets: [
+      'KONJ tokenomics + a desktop app for running validator nodes on IPFS',
+      'Recruited for and represented the company at blockchain events in NYC and SF'
+    ]
   },
   {
     company: 'Self-employed',
@@ -88,7 +102,7 @@ export const history: Job[] = [
     years: '2014 to 2016',
     dates: 'Feb 2014 - Sep 2016',
     line: 'Websites, game servers, and plugins for bootstrapped hosts, as side income in high school.',
-    bullets: []
+    bullets: ['Those hosts served thousands of users and were later bought out by bigger competitors']
   }
 ];
 

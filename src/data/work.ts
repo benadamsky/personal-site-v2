@@ -32,7 +32,6 @@ export const history: Job[] = [
     role: 'Co-founder, CTO',
     years: '2023 to 2026',
     dates: 'Dec 2023 - 2026',
-    url: 'https://weponder.io',
     line: 'Social surveys and prediction games on Farcaster. 100k+ users, 590k on-chain votes.',
     blurb: 'Social surveys and prediction games on Farcaster',
     // Votes, voters, and wallets are from PostHog (live SDK data, Jun 2025 to
@@ -70,7 +69,6 @@ export const history: Job[] = [
     role: 'Founding engineer',
     years: '2020 to 2021',
     dates: 'Apr 2020 - Jan 2021',
-    url: 'https://www.worklife.news/culture/bringing-serendipity-back-to-the-office/',
     line: 'A virtual HQ for remote teams. Peer-to-peer spatial audio, and the MVP that raised $15.5M.',
     blurb: 'A virtual HQ for remote teams',
     bullets: ['Core team on the MVP that raised $15.5M (Naval Ravikant, Sahil Lavingia, Homebrew)']

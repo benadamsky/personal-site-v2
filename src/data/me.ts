@@ -9,6 +9,6 @@ export const me = {
     { name: 'LinkedIn', url: 'https://linkedin.com/in/benadamsky' },
     { name: 'Farcaster', url: 'https://farcaster.xyz/ba' }
   ],
-  // The one line under the name on the plain page. [label](url) links only.
-  line: "Building a job search that doesn't hate you at [Dreamwork](https://www.dreamworkhq.com). Prev [Ponder](https://weponder.io)."
+  // The one line under the name on the root page. [label](url) links only.
+  line: "Building a job search that doesn't hate you at Dreamwork. Prev Ponder."
 };

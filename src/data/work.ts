@@ -9,7 +9,7 @@ export interface Job {
   line: string;
   /** What the company is, for the resume. */
   blurb?: string;
-  /** Resume bullets. Short. */
+  /** Resume-only bullets that add to `line`, not repeat it. Short. */
   bullets: string[];
   url?: string;
 }
@@ -37,7 +37,7 @@ export const history: Job[] = [
     blurb: 'Social surveys and prediction games on Farcaster',
     // Votes, voters, and wallets are from PostHog (live SDK data, Jun 2025 to
     // Feb 2026). The 100k users figure is Ben's and Colin's.
-    bullets: ['100k+ users on Farcaster', 'The prediction game did 590k on-chain votes from 21k people, with 42k wallets set up in-app']
+    bullets: ['590k on-chain votes from 21k people, 42k wallets set up in-app']
   },
   {
     company: 'Freeport',
@@ -46,11 +46,7 @@ export const history: Job[] = [
     dates: 'Dec 2022 - Apr 2024',
     line: 'Fractional fine art. Built the launch that sold a collection of Warhols in six weeks, and the virtual gallery that hung them.',
     blurb: 'Fractional fine art',
-    bullets: [
-      'Built the launch that sold a collection of Warhols: $150k+ in the first six weeks',
-      'Built the virtual gallery that hung them next to NFTs',
-      'Growth work w/ the CEO + CTO: referrals, collector programs'
-    ]
+    bullets: ['The Warhol launch did $150k+ in its first six weeks', 'Growth work w/ the CEO + CTO: referrals, collector programs']
   },
   {
     company: 'Upwork',
@@ -58,10 +54,7 @@ export const history: Job[] = [
     years: '2018 to 2022',
     dates: 'Dec 2018 - Dec 2022',
     line: 'Four years of dashboards, onboarding flows, and interfaces for clients from seed stage to Lyft and Carnival.',
-    bullets: [
-      'Four years of React for everyone from seed stage to Lyft and Carnival',
-      'Top Rated in year one, Expert-Vetted after that (top 1% on the platform)'
-    ]
+    bullets: ['Top Rated in year one, Expert-Vetted after that (top 1% on the platform)']
   },
   {
     company: 'Kettle',
@@ -70,7 +63,7 @@ export const history: Job[] = [
     dates: 'May 2021 - Jul 2022',
     line: 'Online events built for communities. Ran product from idea to launch with a team of four engineers.',
     blurb: 'Online events for communities',
-    bullets: ['Ran product from idea to launch w/ four engineers']
+    bullets: []
   },
   {
     company: 'Branch',
@@ -79,10 +72,7 @@ export const history: Job[] = [
     dates: 'Apr 2020 - Jan 2021',
     line: 'A virtual HQ for remote teams. Peer-to-peer spatial audio, and the MVP that raised $15.5M.',
     blurb: 'A virtual HQ for remote teams',
-    bullets: [
-      'Peer-to-peer spatial audio for virtual offices',
-      'Core team on the MVP that raised $15.5M (Naval Ravikant, Sahil Lavingia, Homebrew)'
-    ]
+    bullets: ['Core team on the MVP that raised $15.5M (Naval Ravikant, Sahil Lavingia, Homebrew)']
   },
   {
     company: 'Konjure',
@@ -91,7 +81,7 @@ export const history: Job[] = [
     dates: 'May 2018 - Dec 2019',
     line: 'A decentralized website builder on IPFS. Finalist in several accelerators.',
     blurb: 'A decentralized website builder on IPFS',
-    bullets: ['Finalist in a few accelerators', 'KONJ tokenomics + a desktop app for running validator nodes']
+    bullets: ['KONJ tokenomics + a desktop app for running validator nodes']
   },
   {
     company: 'Self-employed',
@@ -99,7 +89,7 @@ export const history: Job[] = [
     years: '2014 to 2016',
     dates: 'Feb 2014 - Sep 2016',
     line: 'Websites, game servers, and plugins for bootstrapped hosts, as side income in high school.',
-    bullets: ['Websites, game servers, and plugins for bootstrapped hosts. Side income in high school']
+    bullets: []
   }
 ];
 

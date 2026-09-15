@@ -14,6 +14,13 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   e.g. `FAL_KEY` for video generation. Never import it from app code or ship it.
 - Scene assets are generated with the Codex CLI image tool (`~/.local/bin/codex exec`),
   masters live outside the repo; `public/room.jpg` is the shipped still.
+- The stills over the video (`room-4k.jpg` while pushed in, `room.jpg` without video)
+  are relit to the clips' rest frame with `scripts/room-relight.py <master>`; the raw
+  master is darker than the clips and the room would dim on every focus. Rerun it
+  whenever the poster changes.
+- Nothing in the room uses `mix-blend-mode` or per-frame style writes besides the
+  camera transform. The candle flicker is a CSS animation. Book spines are copies of
+  the still and stay invisible until pulled out.
 - The shelf reads `src/data/audible.json`, written by `node scripts/audible-sync.mjs`
   (unofficial audible-cli; Ben runs `audible quickstart` once himself, never an agent).
 - Hotspot geometry is in `src/components/room/scene.ts`, in percent of the image.

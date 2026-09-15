@@ -16,11 +16,25 @@ interface ClipPlayerProps {
 export interface ClipPlayerHandle {
   /** Interrupt the current clip and dissolve into this one (user-triggered). */
   playNow: (src: string) => void;
+  /** Hold the current frame; resume picks up where it left off. */
+  pause: () => void;
+  resume: () => void;
 }
 
 // Clips share identical head/tail frames (see scripts/clip-normalize.sh), so
 // this only papers over decode timing; it is not a visual crossfade.
 const FADE_MS = 80;
+
+// Resolves once the video has actually put a frame on screen. play() resolving
+// is earlier than that, and switching on it leaves a dark frame at the seam.
+const presented = (v: HTMLVideoElement) =>
+  new Promise<void>((res) => {
+    const withFrames = v as HTMLVideoElement & {
+      requestVideoFrameCallback?: (cb: () => void) => number;
+    };
+    if (withFrames.requestVideoFrameCallback) withFrames.requestVideoFrameCallback(() => res());
+    else requestAnimationFrame(() => requestAnimationFrame(() => res()));
+  });
 
 const pick = (clips: Clip[], avoid: string[]) => {
   // avoid entries may be full URLs or bare filenames
@@ -57,8 +71,16 @@ const ClipPlayer = forwardRef<ClipPlayerHandle, ClipPlayerProps>(function ClipPl
 ) {
   const a = useRef<HTMLVideoElement>(null);
   const b = useRef<HTMLVideoElement>(null);
-  const api = useRef<ClipPlayerHandle>({ playNow: () => {} });
-  useImperativeHandle(ref, () => ({ playNow: (src) => api.current.playNow(src) }), []);
+  const api = useRef<ClipPlayerHandle>({ playNow: () => {}, pause: () => {}, resume: () => {} });
+  useImperativeHandle(
+    ref,
+    () => ({
+      playNow: (src) => api.current.playNow(src),
+      pause: () => api.current.pause(),
+      resume: () => api.current.resume()
+    }),
+    []
+  );
 
   useEffect(() => {
     const vids = [a.current, b.current];
@@ -73,9 +95,17 @@ const ClipPlayer = forwardRef<ClipPlayerHandle, ClipPlayerProps>(function ClipPl
       v.src = src;
       v.load();
     };
+    // The incoming video always goes on top of the other one and fades in;
+    // the outgoing one stays opaque underneath, so there is never a hole
+    // between them. Both stay below everything else in the scene (which is
+    // a stacking context, so -1 is still inside it).
     const show = (i: number) => {
+      vids[i]!.style.zIndex = '0';
+      vids[1 - i]!.style.zIndex = '-1';
       vids[i]!.style.opacity = '1';
-      vids[1 - i]!.style.opacity = '0';
+    };
+    const hide = (i: number) => {
+      vids[i]!.style.opacity = '0';
     };
 
     // Only the first clip loads up front. The second waits until the first is
@@ -107,12 +137,16 @@ const ClipPlayer = forwardRef<ClipPlayerHandle, ClipPlayerProps>(function ClipPl
         cur.play().catch(() => {});
         return;
       }
+      await presented(nxt);
+      if (!alive) return;
       active = 1 - active;
       show(active);
-      // Only touch the finished video once it is fully faded out, otherwise
+      // Only touch the finished video once it is fully covered, otherwise
       // resetting its src blanks it mid-fade and the room flashes.
       timer = setTimeout(() => {
-        if (alive) load(cur, pick(clips, [name(cur), name(nxt)]));
+        if (!alive) return;
+        hide(1 - active);
+        load(cur, pick(clips, [name(cur), name(nxt)]));
       }, FADE_MS + 60);
     };
 
@@ -140,21 +174,27 @@ const ClipPlayer = forwardRef<ClipPlayerHandle, ClipPlayerProps>(function ClipPl
         if (!alive) return;
         nxt
           .play()
+          .then(() => presented(nxt))
           .then(() => {
+            if (!alive) return;
             nxt.style.transition = 'opacity 450ms ease';
-            cur.style.transition = 'opacity 450ms ease';
             active = 1 - active;
             show(active);
             timer = setTimeout(() => {
               if (!alive) return;
               cur.pause();
+              hide(1 - active);
               nxt.style.transition = `opacity ${FADE_MS}ms linear`;
-              cur.style.transition = `opacity ${FADE_MS}ms linear`;
               load(cur, pick(clips, [name(cur), name(nxt)]));
             }, 500);
           })
           .catch(() => {});
       });
+    };
+
+    handle.pause = () => vids[active]!.pause();
+    handle.resume = () => {
+      if (alive) vids[active]!.play().catch(() => {});
     };
 
     vids.forEach((v) => {
@@ -164,6 +204,8 @@ const ClipPlayer = forwardRef<ClipPlayerHandle, ClipPlayerProps>(function ClipPl
     return () => {
       alive = false;
       handle.playNow = () => {};
+      handle.pause = () => {};
+      handle.resume = () => {};
       clearTimeout(timer);
       vids[0]!.removeEventListener('playing', onFirstPlaying);
       vids.forEach((v) => {
@@ -183,8 +225,8 @@ const ClipPlayer = forwardRef<ClipPlayerHandle, ClipPlayerProps>(function ClipPl
   };
   return (
     <>
-      <video ref={a} {...common} poster={poster} style={{ ...common.style, opacity: 1 }} />
-      <video ref={b} {...common} style={{ ...common.style, opacity: 0 }} />
+      <video ref={a} {...common} poster={poster} style={{ ...common.style, opacity: 1, zIndex: 0 }} />
+      <video ref={b} {...common} style={{ ...common.style, opacity: 0, zIndex: -1 }} />
     </>
   );
 });

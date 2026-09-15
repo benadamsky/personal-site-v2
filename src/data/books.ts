@@ -114,5 +114,8 @@ export const library: Omit<Book, 'spine'>[] = [...fromAudible, ...manual]
   .map((b) => ({ ...b, note: b.note ?? notes[b.title] }))
   .sort((a, b) => rank[a.status ?? 'shelf'] - rank[b.status ?? 'shelf']);
 
+/** Title without the subtitle or edition, for the wall in the room. */
+export const short = (title: string) => title.replace(/:.*$/, '').replace(/\s*\(.*\)\s*$/, '').trim();
+
 /** The ones that get a spine in the room. */
 export const books: Book[] = library.slice(0, slots.length).map((b, i) => ({ ...b, spine: slots[i] }));

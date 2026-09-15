@@ -51,8 +51,6 @@ interface Cam {
 
 const Room = () => {
   const sceneRef = useRef<HTMLDivElement>(null);
-  const glowRef = useRef<HTMLDivElement>(null);
-  const warmRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ vw: 0, vh: 0, sw: 0, sh: 0 });
   const [focus, setFocus] = useState<Focus | null>(null);
   const [settled, setSettled] = useState(false); // camera finished pushing in
@@ -181,10 +179,9 @@ const Room = () => {
     }
   }, []);
 
-  // camera + flicker loop
+  // camera loop: the only per-frame script. The candle flicker is CSS.
   useEffect(() => {
     let raf = 0;
-    let t = 0;
     const loop = () => {
       const c = current.current;
       const g = target.current;
@@ -195,24 +192,18 @@ const Room = () => {
       if (sceneRef.current) {
         sceneRef.current.style.transform = `translate3d(${c.x}px, ${c.y}px, 0) scale(${c.s})`;
       }
-      if (!reduced) {
-        t += 0.016;
-        const f =
-          0.72 +
-          0.16 * Math.sin(t * 7.3) +
-          0.08 * Math.sin(t * 13.1 + 1.7) +
-          0.04 * (Math.random() - 0.5);
-        if (glowRef.current) {
-          glowRef.current.style.opacity = String(f);
-          glowRef.current.style.transform = `scale(${0.96 + f * 0.08})`;
-        }
-        if (warmRef.current) warmRef.current.style.opacity = String(0.02 + f * 0.05);
-      }
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(raf);
-  }, [reduced]);
+  }, []);
+
+  // While something is in focus the sharp still covers the video, so the
+  // clips pause rather than decode under it.
+  useEffect(() => {
+    if (focus) player.current?.pause();
+    else player.current?.resume();
+  }, [focus]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && go(null);
@@ -331,22 +322,12 @@ const Room = () => {
         )}
 
         <div
-          ref={glowRef}
           className="glow room__layer"
           style={{
             left: `${regions.candle.x + regions.candle.w / 2 - 9}%`,
             top: `${regions.candle.y + regions.candle.h / 2 - 16}%`,
             width: '18%',
             height: '32%'
-          }}
-        />
-        <div
-          ref={warmRef}
-          className="room__layer"
-          style={{
-            inset: 0,
-            background: 'radial-gradient(ellipse at 30% 75%, rgba(255,150,60,1), transparent 55%)',
-            mixBlendMode: 'soft-light'
           }}
         />
 
@@ -364,7 +345,7 @@ const Room = () => {
         {ready && !small && (
           <div
             className={`wallnote${focus === 'shelf' && settled ? ' is-on' : ''}`}
-            style={{ ...pct(regions.wall), fontSize: sw * 0.0115 }}
+            style={{ ...pct(regions.wall), fontSize: sw * 0.009 }}
           >
             <p className="wallnote__head">On the shelf</p>
             <BookList hot={hot} chosen={chosen} onHot={setHot} onChoose={choose} />

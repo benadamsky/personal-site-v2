@@ -71,18 +71,32 @@ body {
   color: var(--ember);
 }
 
-/* ambient */
+/* ambient: the candle. A plain gradient, no blend mode (a blended layer
+   inside the scaled scene forces the whole scene through an offscreen
+   buffer every frame), and the flicker is a CSS animation, so it runs on
+   the compositor with no per-frame script. */
 .glow {
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
-  mix-blend-mode: screen;
   background: radial-gradient(
     closest-side,
-    rgba(255, 176, 80, 0.55),
-    rgba(255, 140, 50, 0.18) 45%,
+    rgba(255, 178, 90, 0.42),
+    rgba(255, 150, 60, 0.14) 45%,
     transparent 100%
   );
+  animation: flicker 5.3s ease-in-out infinite;
+}
+@keyframes flicker {
+  0% { opacity: 0.78; transform: scale(1); }
+  13% { opacity: 0.92; transform: scale(1.03); }
+  27% { opacity: 0.7; transform: scale(0.98); }
+  38% { opacity: 0.86; transform: scale(1.01); }
+  52% { opacity: 0.74; transform: scale(0.99); }
+  64% { opacity: 0.95; transform: scale(1.04); }
+  79% { opacity: 0.8; transform: scale(1); }
+  90% { opacity: 0.68; transform: scale(0.97); }
+  100% { opacity: 0.78; transform: scale(1); }
 }
 .breath {
   position: absolute;
@@ -141,8 +155,7 @@ body {
   position: absolute;
   inset: -6%;
   border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(255, 190, 110, 0.55), transparent);
-  mix-blend-mode: soft-light;
+  background: radial-gradient(closest-side, rgba(255, 190, 110, 0.22), transparent);
   opacity: 0;
   pointer-events: none;
 }
@@ -206,15 +219,19 @@ body {
   padding: 0;
   background-repeat: no-repeat;
   cursor: pointer;
-  transition: transform 260ms ease, filter 260ms ease;
+  transition: transform 260ms ease, filter 260ms ease, opacity 200ms ease;
   pointer-events: none;
   box-shadow: none;
   overflow: hidden;
+  /* A copy of the still it sits on: invisible until it slides out, so the
+     crop's edges never show against the video. */
+  opacity: 0;
 }
 .spine.is-live {
   pointer-events: auto;
 }
 .spine.is-out {
+  opacity: 1;
   transform: translateX(6%);
   filter: brightness(1.15);
   box-shadow: 4px 0 10px rgba(0, 0, 0, 0.45);
@@ -230,16 +247,31 @@ body {
   color: rgba(243, 233, 216, 0.9);
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
   line-height: 1.3;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(#000 96%, transparent);
+  mask-image: linear-gradient(#000 96%, transparent);
 }
 .wallnote.is-on {
   opacity: 1;
   pointer-events: auto;
 }
 .wallnote__head {
-  margin: 0 0 0.6em;
+  margin: 0 0 0.4em;
   font-size: 1.25em;
   font-weight: 500;
   font-variation-settings: 'SOFT' 100;
+}
+.wallnote__all {
+  margin: -0.3em 0 0.8em;
+  font-size: 0.85em;
+}
+.wallnote__all a {
+  color: inherit;
+  opacity: 0.7;
+  text-underline-offset: 3px;
+}
+.wallnote__all a:hover {
+  opacity: 1;
 }
 .wallnote__list {
   list-style: none;
@@ -250,7 +282,7 @@ body {
   display: grid;
   grid-template-columns: 1fr auto;
   column-gap: 1em;
-  padding: 0.28em 0.3em 0.28em 0;
+  padding: 0.16em 0.3em 0.16em 0;
   cursor: pointer;
   border-bottom: 1px solid rgba(243, 233, 216, 0.14);
   transition: color 200ms ease;
@@ -263,13 +295,18 @@ body {
   font-weight: 500;
 }
 .wallnote__author {
-  grid-column: 1;
   opacity: 0.7;
   font-size: 0.85em;
 }
+.wallnote__author::before {
+  content: ' ';
+}
+/* On the wall there is room for titles only; the sheet keeps the authors. */
+.wallnote .wallnote__author {
+  display: none;
+}
 .wallnote__status {
   grid-column: 2;
-  grid-row: 1 / span 2;
   align-self: center;
   font-size: 0.8em;
   opacity: 0.75;
@@ -329,6 +366,11 @@ body {
 .screen__title {
   color: var(--ember);
   font-weight: 500;
+}
+.screen__body .screen__sub {
+  margin: 1.2em 0 0.4em;
+  font-size: 0.85em;
+  color: rgba(217, 211, 198, 0.5);
 }
 .screen__body a {
   color: #8fbcd4;
@@ -429,6 +471,9 @@ body {
 .sheet .wallnote__head {
   margin-top: 0;
 }
+.sheet .wallnote__all a {
+  opacity: 0.85;
+}
 
 /* chrome */
 .room__name,
@@ -491,6 +536,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .breath,
+  .glow,
   .hotspot::before,
   .room__hint {
     animation: none;

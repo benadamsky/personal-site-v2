@@ -1,4 +1,4 @@
-import { now } from '@/data/work';
+import { now, projects } from '@/data/work';
 
 // What is on the monitor right now. Rendered over the visible part of the
 // screen (to the right of his head) once the camera has pushed in.
@@ -16,6 +16,14 @@ const Screen = () => (
       <a href={now.url} target="_blank" rel="noopener noreferrer">
         {now.url.replace(/^https:\/\/(www\.)?/, '')}
       </a>
+      <p className="screen__sub">on the side</p>
+      {projects.map((p) => (
+        <p key={p.name}>
+          <a href={p.url} target="_blank" rel="noopener noreferrer">
+            {p.name}
+          </a>
+        </p>
+      ))}
     </div>
   </div>
 );

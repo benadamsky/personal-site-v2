@@ -124,6 +124,11 @@ export const projects = [
     url: 'https://github.com/dreamworkhq/Tech-Internships-2027'
   },
   {
+    name: 'Linear Command Center',
+    line: 'Raycast menu bar for Linear that shows what needs you',
+    url: 'https://github.com/benadamsky/linear-command-center'
+  },
+  {
     name: 'Libs vs Cons',
     line: 'A satirical card game, launched on Kickstarter',
     url: 'https://www.kickstarter.com/projects/kaimicahmills/libs-vs-cons-a-card-game-about-political-stereotyp'

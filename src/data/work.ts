@@ -114,6 +114,11 @@ export const education = {
 
 export const projects = [
   {
+    name: 'Cryo Protocol Atlas',
+    line: 'Literature pipeline that picks the next cryopreservation experiment worth running',
+    url: 'https://github.com/benadamsky/cryo-protocol-atlas'
+  },
+  {
     name: 'Tech Internships 2027',
     line: 'US tech internships for 2026 to 2027, updated daily on GitHub',
     url: 'https://github.com/dreamworkhq/Tech-Internships-2027'

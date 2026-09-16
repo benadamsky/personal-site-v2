@@ -12,7 +12,8 @@ export const viewport: Viewport = {
   themeColor: '#ffffff'
 };
 
-const span = (years: string) => years.replace(' to ', '–');
+// "2022 to 2024" and "Dec 2022 - Apr 2024" both print with an en dash.
+const span = (s: string) => s.replace(/ (?:to|-) /, '–');
 
 const Home = () => (
   <Shell current="/" home>
@@ -38,9 +39,9 @@ const Home = () => (
     </p>
 
     <h2>Work</h2>
-    <Row years={`${now.dates.split(' - ')[0]}–now`} name={now.company} role={now.role} what={`${now.blurb}.`} url={now.url} blurb={now.blurb} />
+    <Row years={span(now.dates)} name={now.company} role={now.role} what={`${now.blurb}.`} url={now.url} blurb={now.blurb} />
     {history.map((j) => (
-      <Row key={j.company} years={span(j.years)} name={j.company} role={j.role} what={j.line} url={j.url} blurb={j.blurb} bullets={j.bullets} />
+      <Row key={j.company} years={span(j.years)} dates={span(j.dates)} name={j.company} role={j.role} what={j.line} url={j.url} blurb={j.blurb} bullets={j.bullets} />
     ))}
 
     <h2>Projects</h2>
@@ -53,7 +54,7 @@ const Home = () => (
       {education.line}
       <br />
       <span className="muted">
-        {education.school}, {education.dates}
+        {education.school}, {span(education.dates)}
       </span>
     </p>
 

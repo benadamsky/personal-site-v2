@@ -52,7 +52,7 @@ export const history: Job[] = [
     bullets: [
       'Built the launch that sold a collection of Warhols in six weeks ($150k+)',
       'Built the virtual gallery that hung them',
-      'Platform features end to end: API routes, backend models, the analytics pipeline',
+      'Platform features end to end: API routes, backend models, analytics pipeline',
       'Growth work with the CEO and CTO: referrals, collector programs'
     ]
   },
@@ -103,7 +103,7 @@ export const history: Job[] = [
     bullets: [
       'Finalist in several accelerators',
       'KONJ tokenomics and a desktop app for running validator nodes on IPFS',
-      'Recruited for and represented the company at blockchain events in NYC and SF'
+      'Recruited and represented the company at blockchain events in NYC and SF'
     ]
   },
   {

@@ -42,7 +42,8 @@ const css = `
   .plain header{margin:0 0 .6em}
   .plain a{color:#222;text-decoration:none}
   .plain h2{margin:1.2em 0 .4em;font-size:12pt}
-  .plain .row{margin:0 0 .8em;break-inside:avoid}
+  .plain .row{grid-template-columns:8.75rem 1fr auto;column-gap:.6rem;margin:0 0 .8em;break-inside:avoid}
+  .plain .row .yrs{white-space:nowrap}
   .plain .print-only{display:block}
   .plain .noprint{display:none!important}
 }
@@ -77,6 +78,8 @@ export const rich = (text: string) =>
 
 interface RowProps {
   years?: string;
+  /** Resume only: the span with months, in place of `years`. */
+  dates?: string;
   name: string;
   role?: string;
   what: string;
@@ -90,9 +93,10 @@ interface RowProps {
 // One role or project: years on the left, the rest on the right, a small
 // "Visit" at the edge when there is somewhere to go. On screen the entry is
 // one sentence (`what`). On the resume it is the descriptor and bullets.
-export const Row = ({ years, name, role, what, url, blurb, bullets }: RowProps) => (
+export const Row = ({ years, dates, name, role, what, url, blurb, bullets }: RowProps) => (
   <div className="row">
-    {years && <span className="yrs">{years}</span>}
+    {years && <span className={dates ? 'yrs noprint' : 'yrs'}>{years}</span>}
+    {dates && <span className="yrs print-only">{dates}</span>}
     <div style={years ? undefined : { gridColumn: '1 / 3' }}>
       <span className="co">{name}</span>
       {role && <span className="role">, {role}</span>}

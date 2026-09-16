@@ -204,13 +204,6 @@ body {
 .hotspot--gear:hover .hotspot__label {
   color: var(--ink);
 }
-.hotspot--cat .hotspot__label {
-  transform: translate(-50%, -2px);
-}
-.hotspot--cat:hover .hotspot__label,
-.hotspot--cat:focus-visible .hotspot__label {
-  transform: translate(-50%, -6px);
-}
 
 /* book spines: copies of the still that slide out when the shelf is in focus */
 .spine {

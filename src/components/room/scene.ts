@@ -29,11 +29,10 @@ export const media = {
 };
 export const hasVideo = media.clips.length > 0;
 
-// Petting Cleo: dissolve into this clip. It is not in the random rotation:
+// Petting the cat: dissolve into this clip. It is not in the random rotation:
 // she lifts her head and looks back, which reads as a response to being
 // touched, not as something a sleeping cat does on her own.
 export const cat = {
-  name: 'Cleo',
   reaction: '/clips/cat-twitch.mp4'
 };
 

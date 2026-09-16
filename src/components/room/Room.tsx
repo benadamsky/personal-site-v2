@@ -11,7 +11,7 @@ import {
   OVERSCAN,
   media,
   hasVideo,
-  cat as cleo,
+  cat as catClip,
   regions,
   focusRect,
   focusMaxScale,
@@ -246,7 +246,7 @@ const Room = () => {
   const pet = () => {
     if (petting) return;
     setPetting(true);
-    player.current?.playNow(cleo.reaction);
+    player.current?.playNow(catClip.reaction);
     setTimeout(() => setPetting(false), 6500);
   };
 
@@ -353,16 +353,16 @@ const Room = () => {
         <button className="hotspot" style={{ ...pct(regions.paper), '--i': 2 } as React.CSSProperties} onClick={spot('paper')}>
           <span className="hotspot__label">before that</span>
         </button>
+        {/* No label: the cat is just there to be found. */}
         <button
           className="hotspot hotspot--cat"
           style={{ ...pct(regions.cat), '--i': 3 } as React.CSSProperties}
+          aria-label="the cat"
           onClick={(e) => {
             e.stopPropagation();
             pet();
           }}
-        >
-          <span className="hotspot__label">{cleo.name}</span>
-        </button>
+        />
         {/* Gear labels only make sense on hover: shown all at once they pile
             up on each other. Touch visitors get the desk on the plain page. */}
         {!touch && setup.map((g, i) => (

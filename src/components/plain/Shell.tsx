@@ -44,6 +44,7 @@ const css = `
   .plain h2{margin:1.2em 0 .4em;font-size:12pt}
   .plain .row{grid-template-columns:8.75rem 1fr auto;column-gap:.6rem;margin:0 0 .8em;break-inside:avoid}
   .plain .row .yrs{white-space:nowrap}
+  .plain .row .role{color:#222}
   .plain .print-only{display:block}
   .plain .noprint{display:none!important}
 }

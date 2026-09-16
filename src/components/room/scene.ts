@@ -29,18 +29,12 @@ export const media = {
 };
 export const hasVideo = media.clips.length > 0;
 
-// Petting Cleo: dissolve into this clip and purr. It is not in the random
-// rotation: she lifts her head and looks back, which reads as a response to
-// being touched, not as something a sleeping cat does on her own.
+// Petting Cleo: dissolve into this clip. It is not in the random rotation:
+// she lifts her head and looks back, which reads as a response to being
+// touched, not as something a sleeping cat does on her own.
 export const cat = {
   name: 'Cleo',
-  reaction: '/clips/cat-twitch.mp4',
-  purr: '/sfx/purr.mp3'
-};
-
-// Ambient bed behind the sound toggle. Off until the visitor asks for it.
-export const sounds = {
-  rain: '/sfx/rain.mp3'
+  reaction: '/clips/cat-twitch.mp4'
 };
 
 export const regions = {

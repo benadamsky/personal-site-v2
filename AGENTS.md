@@ -29,8 +29,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   the root, so keep the `@media print` rules in `src/app/page.tsx` honest.
 - On phones and portrait tablets (`small` in `Room.tsx`) content opens in a bottom
   sheet and the camera frames the object above it. Desktop content sits on the object.
-- Sound goes through Web Audio gain nodes (`room/audio.ts`); iOS ignores
-  `HTMLMediaElement.volume`. Ambient rain is off until the visitor toggles it.
+- The room is silent by design: no ambient bed, no effects, clips are muted.
 - Video never mounts before the first measure, so reduced-motion and data-saver
   checks are real before a clip is requested.
 - Splash video is a set of event clips in `public/clips/`, each starting and ending

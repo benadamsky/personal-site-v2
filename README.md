@@ -14,7 +14,7 @@ something. "My room" in the nav opens it, and the name in the corner of the room
   `books.ts`, which reads `audible.json`.
 - `scripts/` regenerate assets. `audible-sync.mjs` refreshes the shelf (CI
   runs it daily from `main`), `resume-pdf.sh` prints `public/resume.pdf` from
-  the root page, the rest make clips and sounds through fal.ai.
+  the root page, the rest make clips through fal.ai.
 
 ```
 yarn dev

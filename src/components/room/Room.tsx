@@ -12,7 +12,6 @@ import {
   media,
   hasVideo,
   cat as cleo,
-  sounds,
   regions,
   focusRect,
   focusMaxScale,
@@ -20,7 +19,6 @@ import {
   Rect
 } from './scene';
 import { setup } from '@/data/setup';
-import { ambient, play } from './audio';
 
 // Media queries as external stores: false on the server, live on the client.
 const useMedia = (query: string) =>
@@ -58,7 +56,6 @@ const Room = () => {
   const [pulse, setPulse] = useState(false); // one-time hotspot glow on load
   const [saveData, setSaveData] = useState(false);
   const [hinted, setHinted] = useState(false); // phone: "drag to look around" dismissed
-  const [sound, setSound] = useState(false);
   const [hot, setHot] = useState<number | null>(null); // book spine under the pointer
   const [chosen, setChosen] = useState<number | null>(null); // book spine picked
   const reduced = useMedia('(prefers-reduced-motion: reduce)');
@@ -244,18 +241,13 @@ const Room = () => {
     setDragging(false);
   };
 
+  // One reaction at a time: a second tap while she is still looking up
+  // would restart the clip mid-move.
   const pet = () => {
     if (petting) return;
     setPetting(true);
     player.current?.playNow(cleo.reaction);
-    play(cleo.purr, { level: 0.5, duration: 6500 }, () => setPetting(false));
-  };
-
-  const toggleSound = () => {
-    const on = !sound;
-    setSound(on);
-    if (on) ambient.start(sounds.rain);
-    else ambient.stop(sounds.rain);
+    setTimeout(() => setPetting(false), 6500);
   };
 
   const spot = (id: Focus) => (e: React.MouseEvent) => {
@@ -369,7 +361,7 @@ const Room = () => {
             pet();
           }}
         >
-          <span className="hotspot__label">{petting ? `${cleo.name} is purring` : cleo.name}</span>
+          <span className="hotspot__label">{cleo.name}</span>
         </button>
         {/* Gear labels only make sense on hover: shown all at once they pile
             up on each other. Touch visitors get the desk on the plain page. */}
@@ -425,9 +417,6 @@ const Room = () => {
       <Link className="room__name" href="/" title="The plain version of this site">
         Ben Adamsky
       </Link>
-      <button className="room__sound" onClick={(e) => { e.stopPropagation(); toggleSound(); }} aria-pressed={sound}>
-        {sound ? 'sound on' : 'sound off'}
-      </button>
     </main>
   );
 };

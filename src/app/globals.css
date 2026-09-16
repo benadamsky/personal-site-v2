@@ -477,7 +477,6 @@ body {
 
 /* chrome */
 .room__name,
-.room__sound,
 .room__hint {
   position: absolute;
   bottom: calc(24px + env(safe-area-inset-bottom));
@@ -495,20 +494,6 @@ body {
 .room__name:hover {
   text-decoration: underline;
   text-underline-offset: 4px;
-}
-.room__sound {
-  right: 28px;
-  padding: 0;
-  border: 0;
-  background: none;
-  font: inherit;
-  font-size: 14px;
-  color: var(--ink-dim);
-  cursor: pointer;
-}
-.room__sound:hover,
-.room__sound[aria-pressed='true'] {
-  color: var(--ink);
 }
 .room__hint {
   left: 50%;
@@ -528,8 +513,7 @@ body {
     opacity: 1;
   }
 }
-.room.is-focused .room__name,
-.room.is-focused .room__sound {
+.room.is-focused .room__name {
   opacity: 0;
   pointer-events: none;
 }

@@ -38,9 +38,9 @@ const Home = () => (
     </p>
 
     <h2>Work</h2>
-    <Row years={`${now.dates.split(' - ')[0]}–now`} name={now.company} role={now.role} what={`${now.blurb}.`} url={now.url} />
+    <Row years={`${now.dates.split(' - ')[0]}–now`} name={now.company} role={now.role} what={`${now.blurb}.`} url={now.url} blurb={now.blurb} />
     {history.map((j) => (
-      <Row key={j.company} years={span(j.years)} name={j.company} role={j.role} what={j.line} url={j.url} bullets={j.bullets} />
+      <Row key={j.company} years={span(j.years)} name={j.company} role={j.role} what={j.line} url={j.url} blurb={j.blurb} bullets={j.bullets} />
     ))}
 
     <h2>Projects</h2>

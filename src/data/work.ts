@@ -9,7 +9,8 @@ export interface Job {
   line: string;
   /** What the company is, for the resume. */
   blurb?: string;
-  /** Resume-only bullets that add to `line`, not repeat it. Short. */
+  /** Resume only, under `blurb`. `line` is not on the resume, so these carry
+   *  everything it says. Short, one result each. */
   bullets: string[];
   url?: string;
 }
@@ -36,7 +37,10 @@ export const history: Job[] = [
     blurb: 'Social surveys and prediction games on Farcaster',
     // Votes, voters, and wallets are from PostHog (live SDK data, Jun 2025 to
     // Feb 2026). The 100k users figure is Ben's and Colin's.
-    bullets: ['590k on-chain votes from 21k people, 42k wallets set up in-app']
+    bullets: [
+      'Grew to 100k+ users and 590k on-chain votes from 21k people',
+      'In-app onboarding that set up 42k wallets'
+    ]
   },
   {
     company: 'Freeport',
@@ -46,9 +50,10 @@ export const history: Job[] = [
     line: 'Fractional fine art. Built the launch that sold a collection of Warhols in six weeks, and the virtual gallery that hung them.',
     blurb: 'Fractional fine art',
     bullets: [
-      'The Warhol launch did $150k+ in its first six weeks',
+      'Built the launch that sold a collection of Warhols in six weeks ($150k+)',
+      'Built the virtual gallery that hung them',
       'Platform features end to end: API routes, backend models, the analytics pipeline',
-      'Growth work w/ the CEO + CTO: referrals, collector programs'
+      'Growth work with the CEO and CTO: referrals, collector programs'
     ]
   },
   {
@@ -59,7 +64,7 @@ export const history: Job[] = [
     line: 'Four years of dashboards, onboarding flows, and interfaces for startups through enterprises, plus web and brand copy for clients like Lyft and Carnival.',
     bullets: [
       'Top Rated in year one, Expert-Vetted after that (top 1% on the platform)',
-      'Dashboards, onboarding flows, landing pages, API integrations, and responsive interfaces for web and native apps',
+      'Four years of dashboards, onboarding flows, landing pages, and API integrations for startups through enterprises',
       'Web and brand copy for businesses, including Lyft and Carnival Cruise Line'
     ]
   },
@@ -70,7 +75,10 @@ export const history: Job[] = [
     dates: 'May 2021 - Jul 2022',
     line: 'Online events built for communities. Ran product from idea to launch with a team of four engineers.',
     blurb: 'Online events for communities',
-    bullets: ['Built virtual event software with real-time activities']
+    bullets: [
+      'Ran product from idea to launch with a team of four engineers',
+      'Virtual event software with real-time activities'
+    ]
   },
   {
     company: 'Branch',
@@ -81,6 +89,7 @@ export const history: Job[] = [
     blurb: 'A virtual HQ for remote teams',
     bullets: [
       'Core team on the MVP that raised $15.5M (Naval Ravikant, Sahil Lavingia, Homebrew)',
+      'Peer-to-peer spatial audio',
       'Major architectural decisions for the core app and the custom style library'
     ]
   },
@@ -92,7 +101,8 @@ export const history: Job[] = [
     line: 'A decentralized website builder on IPFS. Finalist in several accelerators.',
     blurb: 'A decentralized website builder on IPFS',
     bullets: [
-      'KONJ tokenomics + a desktop app for running validator nodes on IPFS',
+      'Finalist in several accelerators',
+      'KONJ tokenomics and a desktop app for running validator nodes on IPFS',
       'Recruited for and represented the company at blockchain events in NYC and SF'
     ]
   },
@@ -102,7 +112,10 @@ export const history: Job[] = [
     years: '2014 to 2016',
     dates: 'Feb 2014 - Sep 2016',
     line: 'Websites, game servers, and plugins for bootstrapped hosts, as side income in high school.',
-    bullets: ['Those hosts served thousands of users and were later bought out by bigger competitors']
+    bullets: [
+      'Websites, game servers, and plugins for bootstrapped hosts, as side income in high school',
+      'Those hosts served thousands of users and were later bought out by bigger competitors'
+    ]
   }
 ];
 

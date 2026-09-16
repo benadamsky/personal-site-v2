@@ -81,18 +81,23 @@ interface RowProps {
   role?: string;
   what: string;
   url?: string;
+  /** Resume only: a few words on what the company is, in place of `what`. */
+  blurb?: string;
+  /** Resume only. */
   bullets?: string[];
 }
 
 // One role or project: years on the left, the rest on the right, a small
-// "Visit" at the edge when there is somewhere to go.
-export const Row = ({ years, name, role, what, url, bullets }: RowProps) => (
+// "Visit" at the edge when there is somewhere to go. On screen the entry is
+// one sentence (`what`). On the resume it is the descriptor and bullets.
+export const Row = ({ years, name, role, what, url, blurb, bullets }: RowProps) => (
   <div className="row">
     {years && <span className="yrs">{years}</span>}
     <div style={years ? undefined : { gridColumn: '1 / 3' }}>
       <span className="co">{name}</span>
       {role && <span className="role">, {role}</span>}
-      <p className="what">{what}</p>
+      <p className={blurb || bullets ? 'what noprint' : 'what'}>{what}</p>
+      {blurb && <p className="what muted print-only">{blurb}</p>}
       {bullets && bullets.length > 0 && (
         <ul className="print-only">
           {bullets.map((b) => (

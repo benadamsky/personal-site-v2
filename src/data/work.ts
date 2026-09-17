@@ -33,13 +33,17 @@ export const history: Job[] = [
     role: 'Co-founder, CTO',
     years: '2023 to 2026',
     dates: 'Dec 2023 - 2026',
-    line: 'Social surveys and prediction games on Farcaster. 100k+ users, 590k on-chain votes.',
+    line: 'Social surveys and prediction games on Farcaster. 100k+ users, 590k onchain votes.',
     blurb: 'Social surveys and prediction games on Farcaster',
-    // Votes, voters, and wallets are from PostHog (live SDK data, Jun 2025 to
-    // Feb 2026). The 100k users figure is Ben's and Colin's.
+    // Votes and wallets are from PostHog (live SDK data, Jun 2025 to Feb 2026).
+    // The 100k users figure is Ben's and Colin's. The OP grant (80,000 OP, May
+    // 2024) and the #1-on-Farcaster ranking (Jun 2025) are from Ponder's Slack.
     bullets: [
-      'Grew to 100k+ users and 590k on-chain votes from 21k people',
-      'In-app onboarding that set up 42k wallets'
+      'One of the first social apps on Farcaster, with events run alongside the Farcaster team',
+      'Grew from 0 to 100k+ users, 42k onchain wallets, and 590k onchain votes on Base',
+      'Built the whole app, frontend, backend, and smart contracts, through several MVPs and a full rearchitecture',
+      'Won an Optimism grant and ran an extensive onchain bounty campaign with it',
+      'At one point the #1 mini app on Farcaster by opens and transactions, and #1 app on Base (now Coinbase Wallet)'
     ]
   },
   {

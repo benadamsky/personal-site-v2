@@ -23,7 +23,7 @@ const css = `
 .plain .row{display:grid;grid-template-columns:6.5rem 1fr auto;column-gap:1rem;margin:0 0 1.1em}
 .plain .row .yrs{color:#777;font-variant-numeric:tabular-nums}
 .plain .row .co{font-weight:600;color:#111}
-.plain .row .role{color:#777}
+.plain .row .role{color:#222}
 .plain .row .what{margin:.1em 0 0}
 .plain .row .visit{font-size:.9em;align-self:start}
 .plain .row .visit::after{content:" \\2197"}
@@ -44,7 +44,6 @@ const css = `
   .plain h2{margin:1.2em 0 .4em;font-size:12pt}
   .plain .row{grid-template-columns:8.75rem 1fr auto;column-gap:.6rem;margin:0 0 .8em;break-inside:avoid}
   .plain .row .yrs{white-space:nowrap}
-  .plain .row .role{color:#222}
   .plain .print-only{display:block}
   .plain .noprint{display:none!important}
 }

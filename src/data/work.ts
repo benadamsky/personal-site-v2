@@ -43,8 +43,7 @@ export const history: Job[] = [
       'Grew from 0 to 100k+ users, 42k wallets, and 590k onchain votes on Base',
       'Built the whole app, frontend to smart contracts, from MVP to rearchitecture',
       'Won an Optimism grant and ran an extensive onchain bounty campaign with it',
-      'At one point the #1 mini app on Farcaster by opens and transactions',
-      '#1 app on Base (now Coinbase Wallet)'
+      'At one point the #1 mini app on Farcaster and the Base app (now\u00a0Coinbase\u00a0Wallet) by opens and transactions'
     ]
   },
   {

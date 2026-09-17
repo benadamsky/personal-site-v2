@@ -39,11 +39,12 @@ export const history: Job[] = [
     // The 100k users figure is Ben's and Colin's. The OP grant (80,000 OP, May
     // 2024) and the #1-on-Farcaster ranking (Jun 2025) are from Ponder's Slack.
     bullets: [
-      'One of the first social apps on Farcaster, with events run alongside the Farcaster team',
-      'Grew from 0 to 100k+ users, 42k onchain wallets, and 590k onchain votes on Base',
-      'Built the whole app, frontend, backend, and smart contracts, through several MVPs and a full rearchitecture',
+      'One of Farcaster\'s first social apps, running events with the Farcaster team',
+      'Grew from 0 to 100k+ users, 42k wallets, and 590k onchain votes on Base',
+      'Built the whole app, frontend to smart contracts, from MVP to rearchitecture',
       'Won an Optimism grant and ran an extensive onchain bounty campaign with it',
-      'At one point the #1 mini app on Farcaster by opens and transactions, and #1 app on Base (now Coinbase Wallet)'
+      'At one point the #1 mini app on Farcaster by opens and transactions',
+      '#1 app on Base (now Coinbase Wallet)'
     ]
   },
   {
@@ -68,7 +69,7 @@ export const history: Job[] = [
     line: 'Four years of dashboards, onboarding flows, and interfaces for startups through enterprises, plus web and brand copy for clients like Lyft and Carnival.',
     bullets: [
       'Top Rated in year one, Expert-Vetted after that (top 1% on the platform)',
-      'Four years of dashboards, onboarding flows, landing pages, and API integrations for startups through enterprises',
+      'Dashboards, onboarding flows, and APIs for startups through enterprises',
       'Web and brand copy for businesses, including Lyft and Carnival Cruise Line'
     ]
   },
@@ -117,7 +118,7 @@ export const history: Job[] = [
     dates: 'Feb 2014 - Sep 2016',
     line: 'Websites, game servers, and plugins for bootstrapped hosts, as side income in high school.',
     bullets: [
-      'Websites, game servers, and plugins for bootstrapped hosts, as side income in high school',
+      'Websites, game servers, and plugins for bootstrapped hosts, in high school',
       'Those hosts served thousands of users and were later bought out by bigger competitors'
     ]
   }

@@ -33,7 +33,7 @@ export const history: Job[] = [
     role: 'Co-founder, CTO',
     years: '2023 to 2026',
     dates: 'Dec 2023 - 2026',
-    line: 'Social surveys and prediction games on Farcaster. 100k+ users, 590k onchain votes.',
+    line: 'Social surveys and prediction games, one of the first social apps on Farcaster. Built it all, frontend to smart contracts: 100k+ users, 590k onchain votes, an Optimism grant, and a run as the #1 mini app on Farcaster and the Base app.',
     blurb: 'Social surveys and prediction games on Farcaster',
     // Votes and wallets are from PostHog (live SDK data, Jun 2025 to Feb 2026).
     // The 100k users figure is Ben's and Colin's. The OP grant (80,000 OP, May
